@@ -1,7 +1,20 @@
+import { Link } from "@/components/Common";
+import { MainLayout } from "@/components/Layouts";
+
 export function HeroSection() {
   return (
-    <main className="h-screen bg-dark-1 flex items-center justify-center">
-      <h1 className="text-6xl uppercase font-montserrat">Doggie</h1>
-    </main>
+    <MainLayout>
+      <main className="h-screen flex flex-grow items-center justify-center">
+        <div className="flex gap-16 text-xl">
+          <div>
+            <Link href={"/stake"}>Stake on existing pools</Link>
+          </div>
+
+          <div>
+            <Link href={"/createPool"}>Create Staking pool</Link>
+          </div>
+        </div>
+      </main>
+    </MainLayout>
   );
 }

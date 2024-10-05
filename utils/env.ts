@@ -1,1 +1,1 @@
-export const { FIREBASE_KEY } = process.env;
+export const { FIREBASE_KEY, ENCRYPTION_KEY } = process.env;
