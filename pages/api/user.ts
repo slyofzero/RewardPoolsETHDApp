@@ -1,24 +1,30 @@
 import { getDocument } from "@/firebase";
 import { ApiResponseTemplate, StoredAccount } from "@/types";
+import { decodeJWT } from "@/utils/auth";
 import type { NextApiRequest, NextApiResponse } from "next";
 
-export interface AddressData extends ApiResponseTemplate {
+export interface UserData extends ApiResponseTemplate {
   data?: StoredAccount;
 }
 
 export default async function address(
   req: NextApiRequest,
-  res: NextApiResponse<AddressData>
+  res: NextApiResponse<UserData>
 ) {
   try {
     const method = req.method;
+    const address = decodeJWT(req);
+
+    if (!address) {
+      return res
+        .status(401)
+        .json({ message: "Please sign in to view this page." });
+    }
 
     switch (method) {
       case "GET": {
-        const { address } = req.query;
-
         const [account] = await getDocument<StoredAccount>({
-          collectionName: "accounts",
+          collectionName: "users",
           queries: [["address", "==", address]],
         });
 
@@ -27,11 +33,11 @@ export default async function address(
             message: "A new wallet was registered successfully.",
             data: account,
           });
-        } else {
-          return res.status(404).json({
-            message: "This wallet is not registered.",
-          });
         }
+
+        return res.status(404).json({
+          message: "This wallet is not registered.",
+        });
       }
 
       default: {

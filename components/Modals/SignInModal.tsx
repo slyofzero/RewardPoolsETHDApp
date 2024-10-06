@@ -1,89 +1,65 @@
-import { Dispatch, SetStateAction, useState } from "react";
-import { Modal } from ".";
-import { JWTKeyName, verificationAmount } from "@/utils/constants";
-import { Copy } from "../Common";
-import { shortenEthAddress } from "@/utils/web3";
-import { clientFetcher } from "@/utils/api";
-import { sleep } from "@/utils/time";
-import { useRouter } from "next/router";
-import { VerifySignInResponse } from "@/pages/api/verify/signin";
+import { isValidEthAddress } from "@/utils/form-validation";
+import { Input } from "../Common";
+import { ShowWhen } from "../Utils";
+import { Modal, VerificationModal } from ".";
+import { Dispatch, FormEvent, SetStateAction, useState } from "react";
 
-interface Props {
-  setShowModal: Dispatch<SetStateAction<boolean>>;
+interface SignInFormData {
   address: string;
 }
 
-type VerificationState = "verifying" | "failed" | "verified" | "pending";
+interface Props {
+  setShowModal: Dispatch<SetStateAction<boolean>>;
+}
 
-export function SignInModal({ setShowModal, address }: Props) {
-  const [verificationState, setVerificationState] =
-    useState<VerificationState>("pending");
-  const paymentWallet = process.env.NEXT_PUBLIC_VERIFICATION_ADDRESS;
-  const router = useRouter();
+export function SignInModal({ setShowModal }: Props) {
+  const [showVerificationModal, setShowVerificationModal] = useState(false);
+  const [address, setAddress] = useState("");
 
-  const verifySignIn = async () => {
-    if (verificationState === "pending" || verificationState === "failed") {
-      setVerificationState("verifying");
+  function onSubmit(e: FormEvent<HTMLFormElement>) {
+    e.preventDefault();
 
-      let attempt = 0;
+    const form = e.currentTarget;
+    const { address } = Object.fromEntries(
+      new FormData(form).entries()
+    ) as unknown as SignInFormData;
 
-      for (const attempt_number of Array.from(Array(20).keys())) {
-        attempt = attempt_number + 1;
-        const data = await clientFetcher<VerifySignInResponse>(
-          `/api/verify/signin?address=${address}`
-        );
+    setAddress(address);
 
-        if (data.response === 200) {
-          const { data: verificationData } = data;
-          localStorage.setItem(JWTKeyName, verificationData.token || "");
-          break;
-        }
-        await sleep(5000);
-      }
-
-      if (attempt < 20) {
-        setVerificationState("verified");
-        await sleep(5000);
-        router.push("/dashboard");
-      } else setVerificationState("failed");
-    }
-  };
+    setShowVerificationModal(true);
+  }
 
   return (
-    <Modal
-      className="p-4 flex flex-col gap-8 text-base text-center justify-center"
-      setShowModal={setShowModal}
-    >
-      <h6>
-        To verify your signin, please transfer {verificationAmount}ETH to the
-        below address, for the wallet address you just entered.
-      </h6>
+    <Modal setShowModal={setShowModal}>
+      <div className="flex-grow flex flex-col gap-2 items-center justify-center text-lg">
+        <h6>Please enter your wallet address</h6>
 
-      <span className="flex gap-1 whitespace-nowrap items-center mx-auto">
-        Your Wallet - {shortenEthAddress(address, 10)}
-      </span>
+        <form
+          onSubmit={onSubmit}
+          className="flex flex-col md:flex-row gap-4 items-center mt-2"
+        >
+          <Input
+            name="address"
+            className="w-[21rem]"
+            required
+            match={[isValidEthAddress]}
+          />
 
-      <span className="flex gap-1 items-center">
-        <Copy value={paymentWallet} />
-        <h6 className="hidden md:block p-2 bg-gray-800 rounded-md">
-          {paymentWallet}
-        </h6>
+          <button className="text-black bg-white rounded-md font-semibold px-4 text-sm p-2">
+            Sign In
+          </button>
+        </form>
 
-        <h6 className="md:hidden p-2 bg-gray-800 rounded-md">
-          {shortenEthAddress(paymentWallet, 14)}
-        </h6>
-      </span>
-
-      <button
-        onClick={verifySignIn}
-        className="text-black bg-white rounded-md font-semibold px-4 text-sm p-2 capitalize"
-      >
-        {verificationState === "pending"
-          ? "I have paid"
-          : verificationState === "verifying"
-            ? `${verificationState}...`
-            : verificationState}
-      </button>
+        <ShowWhen
+          component={
+            <VerificationModal
+              setShowModal={setShowVerificationModal}
+              address={address}
+            />
+          }
+          when={showVerificationModal}
+        />
+      </div>
     </Modal>
   );
 }

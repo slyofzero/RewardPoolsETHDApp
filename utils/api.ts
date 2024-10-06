@@ -29,6 +29,11 @@ export async function clientFetcher<T>(url: string) {
   headers.append("authorization", token);
 
   const response = await apiFetcher<T>(url, headers);
+
+  if (response.response === 401) {
+    localStorage.removeItem(JWTKeyName);
+  }
+
   return response;
 }
 
@@ -42,5 +47,10 @@ export async function clientPoster<T>(
   headers.append("authorization", token);
 
   const response = await apiPoster<T>(url, body, headers, method);
+
+  if (response.response === 401) {
+    localStorage.removeItem(JWTKeyName);
+  }
+
   return response;
 }

@@ -100,4 +100,6 @@ export function Modal({ children, setShowModal, size, className }: Props) {
   );
 }
 
+export * from "./VerificationModal";
 export * from "./SignInModal";
+export * from "./SignOutModal";
