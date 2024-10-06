@@ -4,4 +4,5 @@ export interface StoredAccount {
   address: string;
   createdOn: Timestamp;
   verificationTxn: string;
+  id?: string;
 }

@@ -1,13 +1,13 @@
-import { addDocument } from "@/firebase";
+import { addDocument, getDocument, updateDocumentById } from "@/firebase";
 import { etherScanProvider } from "@/rpc";
 import { ApiResponseTemplate, StoredAccount } from "@/types";
 import { TransactionHistory } from "@/types/transactions";
 import { apiFetcher } from "@/utils/api";
+import { createToken } from "@/utils/auth";
 import { validVerificationTime, verificationAmount } from "@/utils/constants";
 import { getSecondsElapsed } from "@/utils/time";
 import { ethers } from "ethers";
 import { Timestamp } from "firebase-admin/firestore";
-import jwt from "jsonwebtoken";
 import type { NextApiRequest, NextApiResponse } from "next";
 
 export interface VerifySignInResponse extends ApiResponseTemplate {
@@ -56,21 +56,32 @@ export default async function verifySignin(
 
           if (etherValue !== verificationAmount) continue;
 
-          addDocument<StoredAccount>({
+          const [userData] = await getDocument<StoredAccount>({
             collectionName: "users",
-            data: {
-              address,
-              createdOn: Timestamp.now(),
-              verificationTxn: hash,
-            },
+            queries: [["address", "==", address]],
           });
 
+          if (userData) {
+            updateDocumentById<StoredAccount>({
+              collectionName: "users",
+              id: userData.id || "",
+              updates: {
+                verificationTxn: hash,
+              },
+            });
+          } else {
+            addDocument<StoredAccount>({
+              collectionName: "users",
+              data: {
+                address,
+                createdOn: Timestamp.now(),
+                verificationTxn: hash,
+              },
+            });
+          }
+
           // Generate JWT token
-          const token = jwt.sign(
-            { address }, // Payload
-            process.env.ENCRYPTION_KEY, // Secret key from .env
-            { expiresIn: "1h" } // Token expires in 1 hour
-          );
+          const token = createToken(address);
 
           return res
             .status(200)

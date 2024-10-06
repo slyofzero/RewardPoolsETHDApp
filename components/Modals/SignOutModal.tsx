@@ -13,6 +13,7 @@ export function SignOutModal({ setShowModal }: Props) {
   const signOut = () => {
     localStorage.removeItem(JWTKeyName);
     setUser("");
+    setShowModal(false);
   };
 
   return (

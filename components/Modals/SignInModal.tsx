@@ -27,6 +27,7 @@ export function SignInModal({ setShowModal }: Props) {
     setAddress(address);
 
     setShowVerificationModal(true);
+    setShowModal(false);
   }
 
   return (

@@ -1,4 +1,4 @@
-import { MatchFuncType } from "@/utils";
+import { MatchFuncType } from "@/utils/form-validation";
 import { inputCva } from "./cva";
 import { VariantProps } from "class-variance-authority";
 import { ChangeEvent } from "react";

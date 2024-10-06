@@ -1,3 +1,4 @@
+import { getTokenDetails } from "../web3";
 import { MatchFuncType } from "./types";
 
 export * from "./types";
@@ -21,6 +22,27 @@ export const isValidEthAddress: MatchFuncType = (address) => {
 
   if (!isAddressValid) {
     return "Please enter a valid Ethereum address.";
+  }
+
+  return true;
+};
+
+// ------------------------------ To check if the address is valid ------------------------------
+export const isValidERC20Token: MatchFuncType = async (address) => {
+  const details = await getTokenDetails(address);
+
+  if (!details) return "Please enter a valid ERC20 token address";
+
+  return true;
+};
+
+// ------------------------------ To check if the number is valid ------------------------------
+export const isValidNumber: MatchFuncType = (number) => {
+  const numberPattern = /^[0-9]+$/; // This pattern matches only digits (0-9)
+  const isNumberValid = numberPattern.test(number);
+
+  if (!isNumberValid) {
+    return "Please enter a valid number.";
   }
 
   return true;

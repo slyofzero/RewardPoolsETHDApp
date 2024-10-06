@@ -1,4 +1,4 @@
-import { MatchFuncType } from "@/utils";
+import { MatchFuncType } from "@/utils/form-validation";
 
 /* eslint-disable */
 export type onChangeType = (name: string, value: string) => void;

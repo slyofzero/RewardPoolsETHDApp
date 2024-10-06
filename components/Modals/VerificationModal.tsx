@@ -5,7 +5,6 @@ import { Copy } from "../Common";
 import { shortenEthAddress } from "@/utils/web3";
 import { clientFetcher } from "@/utils/api";
 import { sleep } from "@/utils/time";
-import { useRouter } from "next/router";
 import { VerifySignInResponse } from "@/pages/api/verify/signin";
 import { useUser } from "@/state";
 
@@ -20,7 +19,7 @@ export function VerificationModal({ setShowModal, address }: Props) {
   const [verificationState, setVerificationState] =
     useState<VerificationState>("pending");
   const paymentWallet = process.env.NEXT_PUBLIC_VERIFICATION_ADDRESS;
-  const router = useRouter();
+
   const { setUser } = useUser();
 
   const verifySignIn = async () => {
@@ -47,7 +46,7 @@ export function VerificationModal({ setShowModal, address }: Props) {
       if (attempt < 20) {
         setVerificationState("verified");
         await sleep(5000);
-        router.push("/dashboard");
+        setShowModal(false);
       } else setVerificationState("failed");
     }
   };
@@ -82,10 +81,12 @@ export function VerificationModal({ setShowModal, address }: Props) {
         className="text-black bg-white rounded-md font-semibold px-4 text-sm p-2 capitalize"
       >
         {verificationState === "pending"
-          ? "I have paid"
+          ? "Check verification"
           : verificationState === "verifying"
             ? `${verificationState}...`
-            : verificationState}
+            : verificationState === "verified"
+              ? "Verified Successfully"
+              : verificationState}
       </button>
     </Modal>
   );
