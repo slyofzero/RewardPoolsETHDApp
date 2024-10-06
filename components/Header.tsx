@@ -10,10 +10,6 @@ export function Header() {
         <Link href={"/signin"} className={buttonCva({ type: "light" })}>
           Sign In
         </Link>
-
-        <Link href={"/register"} className={buttonCva()}>
-          Register
-        </Link>
       </div>
     </header>
   );

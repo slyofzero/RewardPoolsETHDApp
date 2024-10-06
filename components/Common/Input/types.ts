@@ -1,6 +1,7 @@
 import { MatchFuncType } from "@/utils";
 import { inputCva } from "./cva";
 import { VariantProps } from "class-variance-authority";
+import { ChangeEvent } from "react";
 
 /* eslint-disable */
 interface OmittedProps {
@@ -17,8 +18,11 @@ export type InputVariantProps = VariantProps<typeof inputCva>;
 export interface InputProps
   extends HTMLInputElementOmittedProps,
     InputVariantProps {
-  onChange: (name: string, value: string) => void;
   label?: string;
   labelClassName?: string;
-  match?: MatchFuncType;
+  containerClassName?: string;
+  match?: MatchFuncType[];
+  name: string;
+  onChange?: (e: ChangeEvent<HTMLInputElement>) => any;
+  showErrorText?: boolean;
 }
