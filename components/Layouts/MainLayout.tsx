@@ -7,7 +7,7 @@ interface Props {
 
 export function MainLayout({ children }: Props) {
   return (
-    <div className="flex flex-col bg-dark-1 h-screen p-4">
+    <div className="flex flex-col bg-dark-1 h-screen p-4 gap-16">
       <Header />
 
       {children}

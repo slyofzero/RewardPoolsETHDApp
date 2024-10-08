@@ -33,7 +33,7 @@ export default async function verifySignin(
           startblock: "0",
           endblock: "99999999",
           page: "1",
-          offset: "20",
+          offset: "10",
           sort: "desc",
           apikey: process.env.ETHERSCAN_API_KEY,
         });

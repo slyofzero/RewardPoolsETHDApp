@@ -1,23 +1,28 @@
-import { Dispatch, SetStateAction, useState } from "react";
+import { Dispatch, SetStateAction, useEffect, useState } from "react";
 import { Modal } from ".";
 import { stakingPoolGasEth } from "@/utils/constants";
 import { Copy } from "../Common";
 import { shortenEthAddress } from "@/utils/web3";
 import { useUser } from "@/state";
-import { CreatePoolData } from "../Pages";
 import { clientFetcher } from "@/utils/api";
 import { sleep } from "@/utils/time";
 import { useRouter } from "next/router";
+import { VerifyRewardDepositResponse } from "@/pages/api/verify/reward";
+import { StoredPool } from "@/types";
+import { ShowWhen } from "../Utils";
+import { VerifyGasDepositResponse } from "@/pages/api/verify/gas";
 
 interface Props {
   setShowModal: Dispatch<SetStateAction<boolean>>;
-  poolData: CreatePoolData;
+  poolData: StoredPool;
 }
 
 type VerificationState = "verifying" | "failed" | "verified" | "pending";
 
 export function CreatePoolModal({ setShowModal, poolData }: Props) {
-  const [verificationState, setVerificationState] =
+  const [rewardDepositState, setRewardDepositState] =
+    useState<VerificationState>("pending");
+  const [gasDepositState, setGasDepositState] =
     useState<VerificationState>("pending");
 
   const router = useRouter();
@@ -26,29 +31,87 @@ export function CreatePoolModal({ setShowModal, poolData }: Props) {
   const { size, reward, pool, tokenSymbol } = poolData;
   const rewardBalance = parseFloat((size * (reward / 100)).toFixed(6));
 
+  useEffect(() => {
+    if (rewardDepositState === "verified" && gasDepositState === "verified") {
+      setShowModal(false);
+    }
+  }, [rewardDepositState, gasDepositState]);
+
   const verifyRewardDeposit = async () => {
-    if (verificationState === "pending" || verificationState === "failed") {
-      setVerificationState("verifying");
+    if (rewardDepositState === "pending" || rewardDepositState === "failed") {
+      setRewardDepositState("verifying");
       let attempt = 0;
 
       for (const attempt_number of Array.from(Array(20).keys())) {
         attempt = attempt_number + 1;
-        const data = await clientFetcher(`/api/verify/reward?pool=${pool}`);
+        const data = await clientFetcher<VerifyRewardDepositResponse>(
+          `/api/verify/reward?pool=${pool}`
+        );
 
         if (data.response === 200) {
-          const { data: verificationData } = data;
           break;
         }
         await sleep(5000);
       }
 
       if (attempt < 20) {
-        setVerificationState("verified");
+        setRewardDepositState("verified");
         await sleep(5000);
         router.push("/dashboard");
-      } else setVerificationState("failed");
+      } else setRewardDepositState("failed");
     }
   };
+
+  const verifyGasDeposit = async () => {
+    if (gasDepositState === "pending" || gasDepositState === "failed") {
+      setGasDepositState("verifying");
+      let attempt = 0;
+
+      for (const attempt_number of Array.from(Array(20).keys())) {
+        attempt = attempt_number + 1;
+        const data = await clientFetcher<VerifyGasDepositResponse>(
+          `/api/verify/gas?pool=${pool}`
+        );
+
+        if (data.response === 200) {
+          break;
+        }
+        await sleep(5000);
+      }
+
+      if (attempt < 20) {
+        setGasDepositState("verified");
+        await sleep(5000);
+        router.push("/dashboard");
+      } else setGasDepositState("failed");
+    }
+  };
+
+  const depositRewardButton = (
+    <button
+      onClick={verifyRewardDeposit}
+      className="text-black bg-white rounded-md font-semibold px-4 text-sm p-2 capitalize"
+    >
+      {rewardDepositState === "pending"
+        ? `I have deposited ${rewardBalance} ${tokenSymbol}`
+        : rewardDepositState === "verifying"
+          ? `${rewardDepositState}...`
+          : rewardDepositState}
+    </button>
+  );
+
+  const depositGasButton = (
+    <button
+      onClick={verifyGasDeposit}
+      className="text-black bg-white rounded-md font-semibold px-4 text-sm p-2 capitalize"
+    >
+      {gasDepositState === "pending"
+        ? `I have deposited ${stakingPoolGasEth} ETH`
+        : gasDepositState === "verifying"
+          ? `${gasDepositState}...`
+          : gasDepositState}
+    </button>
+  );
 
   return (
     <Modal
@@ -77,27 +140,12 @@ export function CreatePoolModal({ setShowModal, poolData }: Props) {
       </span>
 
       <div className="flex flex-col gap-4">
-        <button
-          onClick={verifyRewardDeposit}
-          className="text-black bg-white rounded-md font-semibold px-4 text-sm p-2 capitalize"
-        >
-          {verificationState === "pending"
-            ? `I have deposited ${rewardBalance} ${tokenSymbol}`
-            : verificationState === "verifying"
-              ? `${verificationState}...`
-              : verificationState}
-        </button>
+        <ShowWhen
+          component={depositRewardButton}
+          when={!poolData.rewardsDepositTxn}
+        />
 
-        <button
-          onClick={verifyRewardDeposit}
-          className="text-black bg-white rounded-md font-semibold px-4 text-sm p-2 capitalize"
-        >
-          {verificationState === "pending"
-            ? `I have deposited ${stakingPoolGasEth} ETH`
-            : verificationState === "verifying"
-              ? `${verificationState}...`
-              : verificationState}
-        </button>
+        <ShowWhen component={depositGasButton} when={!poolData.gasDepositTxn} />
       </div>
     </Modal>
   );

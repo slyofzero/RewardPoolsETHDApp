@@ -1,13 +1,24 @@
 import { getDocument } from "@/firebase";
-import { ApiResponseTemplate, StoredAccount } from "@/types";
+import {
+  ApiResponseTemplate,
+  StoredAccount,
+  StoredPool,
+  StoredStakings,
+} from "@/types";
 import { decodeJWT } from "@/utils/auth";
 import type { NextApiRequest, NextApiResponse } from "next";
 
-export interface UserData extends ApiResponseTemplate {
-  data?: StoredAccount;
+export interface UserActivityData {
+  user: StoredAccount;
+  pools: StoredPool[];
+  stakings: StoredStakings[];
 }
 
-export default async function address(
+export interface UserData extends ApiResponseTemplate {
+  data?: UserActivityData;
+}
+
+export default async function user(
   req: NextApiRequest,
   res: NextApiResponse<UserData>
 ) {
@@ -23,15 +34,30 @@ export default async function address(
 
     switch (method) {
       case "GET": {
-        const [account] = await getDocument<StoredAccount>({
+        const [user] = await getDocument<StoredAccount>({
           collectionName: "users",
           queries: [["address", "==", address]],
         });
 
-        if (account) {
+        if (user) {
+          const [pools, stakings] = await Promise.all([
+            getDocument<StoredPool>({
+              collectionName: "pools",
+              queries: [["creator", "==", address]],
+            }),
+            getDocument<StoredStakings>({
+              collectionName: "stakings",
+              queries: [["user", "==", address]],
+            }),
+          ]);
+
           return res.status(200).json({
             message: "A new wallet was registered successfully.",
-            data: account,
+            data: {
+              user,
+              pools,
+              stakings,
+            },
           });
         }
 
@@ -51,6 +77,6 @@ export default async function address(
 
     return res
       .status(500)
-      .json({ message: "There was an error in wallet registration." });
+      .json({ message: "There was an error in getting user data." });
   }
 }

@@ -9,7 +9,7 @@ import { Timestamp } from "firebase-admin/firestore";
 import type { NextApiRequest, NextApiResponse } from "next";
 
 export interface CreatePoolResponse extends ApiResponseTemplate {
-  data?: CreatePoolData;
+  data?: StoredPool;
 }
 
 export default async function createPool(
@@ -59,28 +59,25 @@ export default async function createPool(
 
         const { symbol, name } = tokenDetails;
 
-        addDocument<StoredPool>({
+        const poolData = await addDocument<StoredPool>({
           collectionName: "pools",
           data: {
             ...restBody,
             pool: pool.address,
             mnemonicPhrase: encrypt(pool.mnemonic?.phrase || ""),
             staked: 0,
-            active: false,
             closesAt,
             tokenName: name,
             tokenSymbol: symbol,
+            status: "PENDING",
+            createdOn: Timestamp.now(),
+            creator: address,
           },
         });
 
         return res.status(200).json({
           message: `New pool ${pool.address} created`,
-          data: {
-            duration,
-            tokenSymbol: symbol,
-            pool: pool.address,
-            ...restBody,
-          },
+          data: poolData,
         });
       }
 
@@ -95,6 +92,6 @@ export default async function createPool(
 
     return res
       .status(500)
-      .json({ message: "There was an error in wallet registration." });
+      .json({ message: "There was an error in creating a pool." });
   }
 }

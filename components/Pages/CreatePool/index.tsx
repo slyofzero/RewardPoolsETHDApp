@@ -4,6 +4,7 @@ import { SignInRequired } from "@/components/SignInRequired";
 import { ShowWhen } from "@/components/Utils";
 import { CreatePoolResponse } from "@/pages/api/createPool";
 import { useUser } from "@/state";
+import { StoredPool } from "@/types";
 import { clientPoster } from "@/utils/api";
 import { isValidERC20Token, isValidNumber } from "@/utils/form-validation";
 import { FormEvent, useState } from "react";
@@ -22,7 +23,7 @@ export interface CreatePoolData {
 export function CreatePool() {
   const { user } = useUser();
   const [showModal, setShowModal] = useState(false);
-  const [createPoolData, setCreatePoolData] = useState<CreatePoolData>();
+  const [createPoolData, setCreatePoolData] = useState<StoredPool>();
   const [showSpinner, setShowSpinner] = useState(false);
 
   async function onSubmit(e: FormEvent<HTMLFormElement>) {
@@ -128,7 +129,7 @@ export function CreatePool() {
         component={
           <CreatePoolModal
             setShowModal={setShowModal}
-            poolData={createPoolData as CreatePoolData}
+            poolData={createPoolData as StoredPool}
           />
         }
         when={showModal}
