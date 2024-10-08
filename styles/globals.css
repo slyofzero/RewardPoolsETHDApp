@@ -5,6 +5,6 @@
 @tailwind utilities;
 
 body {
-  @apply text-light-1;
+  @apply text-light-1 bg-black;
   /* font-family: var(--primary-font); */
 }

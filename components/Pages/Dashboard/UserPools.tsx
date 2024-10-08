@@ -6,11 +6,12 @@ import { classNames } from "@/utils";
 import moment from "moment";
 import { useState } from "react";
 
-interface Props {
-  pools: StoredPool[] | undefined;
+interface PoolProps {
+  pool: StoredPool;
+  dashboard?: boolean;
 }
 
-function Pool({ pool }: { pool: StoredPool }) {
+export function Pool({ pool }: PoolProps) {
   const [showModal, setShowModal] = useState(false);
 
   const milliseconds =
@@ -74,10 +75,16 @@ function Pool({ pool }: { pool: StoredPool }) {
   );
 }
 
+interface Props {
+  pools: StoredPool[] | undefined;
+}
+
 export function UserPools({ pools }: Props) {
   const userPools = (
     <div className="grid grid-cols-1 lg:grid-cols-3 gap-8 items-center">
-      {pools?.map((pool, key) => <Pool key={key} pool={pool} />)}
+      {pools?.map((pool, key) => (
+        <Pool key={key} dashboard={true} pool={pool} />
+      ))}
     </div>
   );
 

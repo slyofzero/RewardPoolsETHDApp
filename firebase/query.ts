@@ -49,7 +49,9 @@ export const addDocument = async <T>({
     docRef = await collectionRef.add(data as object);
   }
 
-  return docRef as T;
+  const docSnapshot = await docRef.get();
+
+  return { id: docRef.id, ...docSnapshot.data() } as T;
 };
 
 export const removeDocumentById = async ({
