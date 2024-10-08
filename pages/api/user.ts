@@ -3,7 +3,7 @@ import {
   ApiResponseTemplate,
   StoredAccount,
   StoredPool,
-  StoredStakings,
+  StoredStakes,
 } from "@/types";
 import { decodeJWT } from "@/utils/auth";
 import type { NextApiRequest, NextApiResponse } from "next";
@@ -11,7 +11,7 @@ import type { NextApiRequest, NextApiResponse } from "next";
 export interface UserActivityData {
   user: StoredAccount;
   pools: StoredPool[];
-  stakings: StoredStakings[];
+  stakings: StoredStakes[];
 }
 
 export interface UserData extends ApiResponseTemplate {
@@ -45,7 +45,7 @@ export default async function user(
               collectionName: "pools",
               queries: [["creator", "==", address]],
             }),
-            getDocument<StoredStakings>({
+            getDocument<StoredStakes>({
               collectionName: "stakings",
               queries: [["user", "==", address]],
             }),

@@ -1,4 +1,5 @@
 import { Link } from "@/components/Common";
+import { StakingModal } from "@/components/Modals";
 import { CreatePoolModal } from "@/components/Modals/CreatePoolModal";
 import { ShowWhen } from "@/components/Utils";
 import { StoredPool } from "@/types";
@@ -11,8 +12,9 @@ interface PoolProps {
   dashboard?: boolean;
 }
 
-export function Pool({ pool }: PoolProps) {
+export function Pool({ pool, dashboard }: PoolProps) {
   const [showModal, setShowModal] = useState(false);
+  const [showStakingModal, setShowStakingModal] = useState(false);
 
   const milliseconds =
     // @ts-ignore
@@ -25,6 +27,15 @@ export function Pool({ pool }: PoolProps) {
       className="text-black bg-white rounded-md font-semibold px-4 text-sm p-2 capitalize"
     >
       Deposit Rewards or Gas
+    </button>
+  );
+
+  const stakeButton = (
+    <button
+      onClick={() => setShowStakingModal(true)}
+      className="text-black bg-white rounded-md font-semibold px-4 text-sm p-2 capitalize"
+    >
+      Stake
     </button>
   );
 
@@ -63,6 +74,11 @@ export function Pool({ pool }: PoolProps) {
           component={depositToPoolButton}
           when={pool.status === "PENDING"}
         />
+
+        <ShowWhen
+          component={stakeButton}
+          when={pool.status === "ACTIVE" && !dashboard}
+        />
       </div>
 
       <ShowWhen
@@ -70,6 +86,13 @@ export function Pool({ pool }: PoolProps) {
           <CreatePoolModal poolData={pool} setShowModal={setShowModal} />
         }
         when={showModal}
+      />
+
+      <ShowWhen
+        component={
+          <StakingModal poolData={pool} setShowModal={setShowStakingModal} />
+        }
+        when={showStakingModal}
       />
     </>
   );

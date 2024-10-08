@@ -1,6 +1,6 @@
 import { useApi } from "@/hooks";
 import { PoolsData } from "@/pages/api/pools";
-import { ChangeEvent, useEffect, useState } from "react";
+import { ChangeEvent, useState } from "react";
 import { Pool } from "../Dashboard/UserPools";
 import { isValidEthAddress } from "@/utils/web3";
 
@@ -13,16 +13,11 @@ interface Props {
 
 export function Pools({ fallbackData }: Props) {
   const [page, setPage] = useState(1);
-  const [lastVisibleId, setLastVisibleId] = useState("");
+  // const [lastVisibleId, setLastVisibleId] = useState("");
 
   const [url, setUrl] = useState(`/api/pools?page=${page}`);
   const { data } = useApi<PoolsData>(url, { fallbackData });
   const pools = data?.data?.pools;
-
-  // useEffect(() => {
-  //   const lastVisibleId = data?.data?.lastVisible;
-  //   if (lastVisibleId) setLastVisibleId(lastVisibleId);
-  // }, [data]);
 
   const onChange = (e: ChangeEvent<HTMLInputElement>) => {
     const value = e.target.value;
@@ -44,7 +39,7 @@ export function Pools({ fallbackData }: Props) {
       <input
         onChange={onChange}
         type="text"
-        className="bg-black rounded-md border-[1.5px] outline-none p-2 placeholder:text-white/75 w-[22rem] mx-auto"
+        className="bg-black rounded-md border-[1.5px] outline-none p-2 placeholder:text-white/75 w-[21rem] mx-auto"
         placeholder="Search pool name or token"
       />
 
