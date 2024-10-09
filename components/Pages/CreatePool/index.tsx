@@ -1,14 +1,13 @@
 import { Input } from "@/components/Common";
 import { CreatePoolModal } from "@/components/Modals/CreatePoolModal";
 import { SignInRequired } from "@/components/SignInRequired";
-import { ShowWhen } from "@/components/Utils";
+import { ShowWhen, Spinner } from "@/components/Utils";
 import { CreatePoolResponse } from "@/pages/api/createPool";
 import { useUser } from "@/state";
 import { StoredPool } from "@/types";
 import { clientPoster } from "@/utils/api";
 import { isValidERC20Token, isValidNumber } from "@/utils/form-validation";
 import { FormEvent, useState } from "react";
-import { FaSpinner } from "react-icons/fa6";
 
 export interface CreatePoolData {
   name: string;
@@ -116,9 +115,7 @@ export function CreatePool() {
           type="submit"
         >
           <ShowWhen
-            component={
-              <FaSpinner className="animate-spin duration-500 mx-auto" />
-            }
+            component={<Spinner />}
             when={showSpinner}
             otherwise={<span>Create Pool</span>}
           />

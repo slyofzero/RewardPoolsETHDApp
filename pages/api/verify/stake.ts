@@ -8,6 +8,8 @@ import {
 } from "@/types";
 import { apiFetcher } from "@/utils/api";
 import { decodeJWT } from "@/utils/auth";
+import { validVerificationTime } from "@/utils/constants";
+import { getSecondsElapsed } from "@/utils/time";
 import { ethers } from "ethers";
 import { Timestamp } from "firebase-admin/firestore";
 import type { NextApiRequest, NextApiResponse } from "next";
@@ -62,12 +64,12 @@ export default async function verifyStake(
 
         // Verifying if a txn has happened in the past 5 minutes.
         for (const txn of txnList) {
-          const { to, from, value, hash, tokenDecimal } = txn;
+          const { to, from, value, hash, tokenDecimal, timeStamp } = txn;
 
           if (to !== pool.toLowerCase()) continue;
           else if (from !== address.toLowerCase()) continue;
 
-          // if (getSecondsElapsed(timeStamp) > validVerificationTime) continue;
+          if (getSecondsElapsed(timeStamp) > validVerificationTime) continue;
 
           const sentTokensAmount = parseFloat(
             parseFloat(ethers.formatUnits(value, Number(tokenDecimal))).toFixed(
@@ -77,6 +79,10 @@ export default async function verifyStake(
 
           if (sentTokensAmount !== stakeAmount) continue;
 
+          const reward = parseFloat(
+            (stakeAmount * (poolData.reward / 100)).toFixed(6)
+          );
+
           addDocument<StoredStakes>({
             collectionName: "stakes",
             data: {
@@ -84,6 +90,8 @@ export default async function verifyStake(
               pool: poolData.id || "",
               stakedOn: Timestamp.now(),
               user: address,
+              poolName: poolData.name,
+              reward,
             },
           });
 

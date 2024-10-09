@@ -5,4 +5,6 @@ export interface StoredStakes {
   amount: number;
   pool: string;
   stakedOn: Timestamp;
+  poolName: string;
+  reward: number;
 }

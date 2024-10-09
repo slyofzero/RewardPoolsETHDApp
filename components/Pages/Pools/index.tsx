@@ -3,6 +3,8 @@ import { PoolsData } from "@/pages/api/pools";
 import { ChangeEvent, useState } from "react";
 import { Pool } from "../Dashboard/UserPools";
 import { isValidEthAddress } from "@/utils/web3";
+import { FaPlus } from "react-icons/fa";
+import { ShowWhen, Spinner } from "@/components/Utils";
 
 interface Props {
   fallbackData: {
@@ -13,11 +15,14 @@ interface Props {
 
 export function Pools({ fallbackData }: Props) {
   const [page, setPage] = useState(1);
-  // const [lastVisibleId, setLastVisibleId] = useState("");
-
   const [url, setUrl] = useState(`/api/pools?page=${page}`);
-  const { data } = useApi<PoolsData>(url, { fallbackData });
+  const { data, isLoading } = useApi<PoolsData>(url, { fallbackData });
   const pools = data?.data?.pools;
+  const lastVisibleId = data?.data?.lastVisible;
+  const totalPages = data?.data?.pages;
+
+  // History of lastVisibleId for pagination
+  const [history, setHistory] = useState<string[]>([""]);
 
   const onChange = (e: ChangeEvent<HTMLInputElement>) => {
     const value = e.target.value;
@@ -34,17 +39,78 @@ export function Pools({ fallbackData }: Props) {
     setUrl(`/api/pools?${urlParams.toString()}`);
   };
 
+  const onPrev = () => {
+    if (history.length > 1) {
+      const prevLastVisibleId = history.at(-2) || "";
+      const newHistory = history.slice(0, -1);
+
+      const urlParams = new URLSearchParams(url.split("?")[1]);
+      urlParams.set("lastVisibleId", prevLastVisibleId);
+
+      setUrl(`/api/pools?${urlParams.toString()}`);
+      setHistory(newHistory);
+      setPage((prev) => prev - 1);
+    }
+  };
+
+  const onNext = () => {
+    if (lastVisibleId) {
+      const urlParams = new URLSearchParams(url.split("?")[1]);
+
+      setHistory([...history, lastVisibleId]);
+
+      urlParams.set("lastVisibleId", lastVisibleId);
+      setUrl(`/api/pools?${urlParams.toString()}`);
+      setPage((prev) => prev + 1);
+    }
+  };
+
+  const poolsComponent = (
+    <div className="grid grid-cols-1 md:grid-cols-3 gap-8 items-center justify-center flex-grow">
+      {pools?.map((pool, key) => <Pool pool={pool} key={key} />)}
+    </div>
+  );
+
   return (
-    <div className="flex flex-col gap-8 w-full flex-grow bg-black">
-      <input
-        onChange={onChange}
-        type="text"
-        className="bg-black rounded-md border-[1.5px] outline-none p-2 placeholder:text-white/75 w-[21rem] mx-auto"
-        placeholder="Search pool name or token"
+    <div className="flex flex-col gap-8 w-full flex-grow bg-black pb-16 lg:pb-0">
+      <div className="flex md:justify-center items-center w-full relative">
+        <input
+          onChange={onChange}
+          type="text"
+          className="bg-black rounded-md border-[1.5px] outline-none p-2 placeholder:text-white/75 w-[14rem] md:w-[21rem]"
+          placeholder="Search pool name or token"
+        />
+        <button className="flex items-center gap-1 absolute right-0 text-black rounded-md font-semibold px-4 text-sm p-2 capitalize bg-white whitespace-nowrap mr-4">
+          <FaPlus /> Create
+        </button>
+      </div>
+
+      <ShowWhen
+        component={poolsComponent}
+        when={!isLoading}
+        otherwise={
+          <div className="flex items-center justify-center flex-grow">
+            <Spinner />
+          </div>
+        }
       />
 
-      <div className="grid grid-cols-1 md:grid-cols-3 gap-8 items-center justify-center">
-        {pools?.map((pool, key) => <Pool pool={pool} key={key} />)}
+      <div className="flex items-center justify-center gap-4 font-bold">
+        <button
+          onClick={onPrev}
+          className="text-black bg-white rounded-md px-4 text-sm p-2 capitalize disabled:bg-white/50"
+          disabled={page === 1}
+        >
+          Previous
+        </button>
+
+        <button
+          onClick={onNext}
+          className="text-black bg-white rounded-md px-4 text-sm p-2 capitalize disabled:bg-white/50"
+          disabled={totalPages ? page >= totalPages : false}
+        >
+          Next
+        </button>
       </div>
     </div>
   );

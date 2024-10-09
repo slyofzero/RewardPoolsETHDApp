@@ -6,6 +6,7 @@ import { useUser } from "@/state";
 import { shortenEthAddress } from "@/utils/web3";
 import { IoMdExit } from "react-icons/io";
 import { classNames } from "@/utils";
+import { Link } from "./Common";
 
 export function Header() {
   const [showSigninModal, setShowSigninModal] = useState(false);
@@ -40,7 +41,14 @@ export function Header() {
   return (
     <>
       <header className="flex justify-between items-center">
-        <h1></h1>
+        <h1 className="text-2xl">DApp Logo here</h1>
+
+        <nav className="hidden lg:flex items-center gap-16 font-semibold">
+          <Link href={"/"}>Home</Link>
+          <Link href={"/pools"}>Pools</Link>
+          <Link href={"/pools/create"}>Create Pool</Link>
+          <Link href={"/"}>Dashboard</Link>
+        </nav>
 
         <ShowWhen
           component={signInButton}

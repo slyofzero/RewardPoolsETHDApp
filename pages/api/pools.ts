@@ -7,8 +7,13 @@ export interface PoolsData extends ApiResponseTemplate {
   data?: {
     pools: StoredPool[];
     lastVisible: string | null;
+    pages: number;
   };
 }
+
+let totalPoolsCache: number | null = null;
+let lastCacheTime: number | null = null;
+const CACHE_DURATION = 10 * 60 * 1000;
 
 export default async function pools(
   req: NextApiRequest,
@@ -19,7 +24,8 @@ export default async function pools(
 
     switch (method) {
       case "GET": {
-        const { pageSize, lastVisibleId, name, token } = req.query || {};
+        const { lastVisibleId, name, token } = req.query || {};
+        const pageSize = Number(req.query.pageSize || 6);
 
         const namePrefix = String(name);
         const endName = namePrefix.replace(/.$/, (c) =>
@@ -30,7 +36,7 @@ export default async function pools(
 
         let query = db
           .collection(collectionName)
-          .limit(Number(pageSize) || 10)
+          .limit(pageSize)
           .orderBy("closesAt");
 
         if (token) {
@@ -63,9 +69,28 @@ export default async function pools(
           lastVisible = querySnapshot.docs[querySnapshot.docs.length - 1].id;
         }
 
+        // const totalSnapshot = await db.collection(collectionName).get();
+        // const totalPools = totalSnapshot.docs.length;
+        // const pages = Math.ceil(totalPools / pageSize);
+
+        // Use cached total pools count if available and not expired
+        const currentTime = Date.now();
+
+        if (
+          !totalPoolsCache ||
+          !lastCacheTime ||
+          currentTime - lastCacheTime > CACHE_DURATION
+        ) {
+          const totalSnapshot = await db.collection(collectionName).get();
+          totalPoolsCache = totalSnapshot.docs.length;
+          lastCacheTime = currentTime; // Update cache timestamp
+        }
+
+        const pages = Math.ceil(totalPoolsCache / pageSize);
+
         return res.status(200).json({
           message: "Pools fetched successfully.",
-          data: { pools, lastVisible },
+          data: { pools, lastVisible, pages },
         });
       }
 
