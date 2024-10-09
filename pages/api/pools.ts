@@ -69,10 +69,6 @@ export default async function pools(
           lastVisible = querySnapshot.docs[querySnapshot.docs.length - 1].id;
         }
 
-        // const totalSnapshot = await db.collection(collectionName).get();
-        // const totalPools = totalSnapshot.docs.length;
-        // const pages = Math.ceil(totalPools / pageSize);
-
         // Use cached total pools count if available and not expired
         const currentTime = Date.now();
 

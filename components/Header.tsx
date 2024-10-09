@@ -47,7 +47,7 @@ export function Header() {
           <Link href={"/"}>Home</Link>
           <Link href={"/pools"}>Pools</Link>
           <Link href={"/pools/create"}>Create Pool</Link>
-          <Link href={"/"}>Dashboard</Link>
+          <Link href={"/dashboard"}>Dashboard</Link>
         </nav>
 
         <ShowWhen

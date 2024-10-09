@@ -46,13 +46,13 @@ export default async function user(
               queries: [["creator", "==", address]],
             }),
             getDocument<StoredStakes>({
-              collectionName: "stakings",
+              collectionName: "stakes",
               queries: [["user", "==", address]],
             }),
           ]);
 
           return res.status(200).json({
-            message: "A new wallet was registered successfully.",
+            message: "Fetched user data successfully.",
             data: {
               user,
               pools,

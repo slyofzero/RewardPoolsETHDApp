@@ -4,6 +4,7 @@ import { CreatePoolModal } from "@/components/Modals/CreatePoolModal";
 import { ShowWhen } from "@/components/Utils";
 import { StoredPool } from "@/types";
 import { classNames } from "@/utils";
+import { shortenEthAddress } from "@/utils/web3";
 import moment from "moment";
 import { useState } from "react";
 
@@ -43,7 +44,15 @@ export function Pool({ pool, dashboard }: PoolProps) {
     <>
       <div className="flex flex-col gap-4 p-4 rounded-md border-white border-[1px] border-solid">
         <div className="flex justify-between items-center">
-          <h6 className="text-xl font-semibold">{pool.name}</h6>
+          <div className="flex flex-col gap-1">
+            <h6 className="text-xl font-semibold">{pool.name}</h6>
+            <ShowWhen
+              component={
+                <span>Creator - {shortenEthAddress(pool.creator, 5)}</span>
+              }
+              when={!dashboard}
+            />
+          </div>
 
           <span
             className={classNames(
@@ -61,9 +70,11 @@ export function Pool({ pool, dashboard }: PoolProps) {
 
         <div className="flex items-center justify-between">
           <p>
-            Staked - {pool.staked} / {pool.size}
+            <strong>Staked</strong> - {pool.staked} / {pool.size}
           </p>
-          <h6>Reward - {pool.reward}%</h6>
+          <h6>
+            <strong>Reward</strong> - {pool.reward}%
+          </h6>
         </div>
 
         <span>

@@ -1,6 +1,7 @@
 import { MainLayout, Pools } from "@/components";
 import { apiFetcher } from "@/utils/api";
 import { PoolsData } from "../api/pools";
+import Head from "next/head";
 
 interface Props {
   fallbackData: {
@@ -11,9 +12,15 @@ interface Props {
 
 export default function PoolsPage({ fallbackData }: Props) {
   return (
-    <MainLayout>
-      <Pools fallbackData={fallbackData} />
-    </MainLayout>
+    <>
+      <Head>
+        <title>Staking Pools</title>
+      </Head>
+
+      <MainLayout>
+        <Pools fallbackData={fallbackData} />
+      </MainLayout>
+    </>
   );
 }
 

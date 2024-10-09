@@ -1,4 +1,4 @@
-import { addDocument, getDocument } from "@/firebase";
+import { addDocument, getDocument, updateDocumentById } from "@/firebase";
 import { etherScanProvider } from "@/rpc";
 import {
   ApiResponseTemplate,
@@ -79,10 +79,6 @@ export default async function verifyStake(
 
           if (sentTokensAmount !== stakeAmount) continue;
 
-          const reward = parseFloat(
-            (stakeAmount * (poolData.reward / 100)).toFixed(6)
-          );
-
           addDocument<StoredStakes>({
             collectionName: "stakes",
             data: {
@@ -90,8 +86,14 @@ export default async function verifyStake(
               pool: poolData.id || "",
               stakedOn: Timestamp.now(),
               user: address,
-              poolName: poolData.name,
-              reward,
+            },
+          });
+
+          updateDocumentById<StoredPool>({
+            collectionName: "pools",
+            id: poolData.id || "",
+            updates: {
+              staked: poolData.staked + stakeAmount,
             },
           });
 
