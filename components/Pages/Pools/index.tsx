@@ -6,17 +6,10 @@ import { isValidEthAddress } from "@/utils/web3";
 import { FaPlus } from "react-icons/fa";
 import { ShowWhen, Spinner } from "@/components/Utils";
 
-interface Props {
-  fallbackData: {
-    response: number;
-    data: PoolsData;
-  };
-}
-
-export function Pools({ fallbackData }: Props) {
+export function Pools() {
   const [page, setPage] = useState(1);
   const [url, setUrl] = useState(`/api/pools?page=${page}`);
-  const { data, isLoading } = useApi<PoolsData>(url, { fallbackData });
+  const { data, isLoading } = useApi<PoolsData>(url);
   const pools = data?.data?.pools;
   const lastVisibleId = data?.data?.lastVisible;
   const totalPages = data?.data?.pages;
