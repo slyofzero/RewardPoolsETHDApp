@@ -3,6 +3,7 @@ import { ShowWhen } from "@/components/Utils";
 import { useApi } from "@/hooks";
 import { PoolData } from "@/pages/api/pool/[id]";
 import { StoredStakes } from "@/types";
+import { classNames } from "@/utils";
 import moment from "moment";
 
 interface PoolProps {
@@ -29,9 +30,16 @@ export function Stake({ stake }: PoolProps) {
     <>
       <div className="flex flex-col gap-4 p-4 rounded-md border-white border-[1px] border-solid">
         <div className="flex justify-between items-center">
-          <div className="flex flex-col gap-1">
-            <h6 className="text-xl font-semibold">{pool.name}</h6>
-          </div>
+          <h6 className="text-xl font-semibold">{pool.name}</h6>
+
+          <span
+            className={classNames(
+              "p-1 px-4 rounded-md text-black font-bold text-sm",
+              stake.status === "PENDING" ? "bg-orange-500" : "bg-green-500"
+            )}
+          >
+            {stake.status}
+          </span>
         </div>
 
         <div className="flex items-center justify-between">

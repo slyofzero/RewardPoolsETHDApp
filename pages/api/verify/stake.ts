@@ -86,6 +86,7 @@ export default async function verifyStake(
               pool: poolData.id || "",
               stakedOn: Timestamp.now(),
               user: address,
+              status: "PENDING",
             },
           });
 
