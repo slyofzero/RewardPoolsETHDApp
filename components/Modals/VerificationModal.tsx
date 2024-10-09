@@ -1,5 +1,4 @@
 import { Dispatch, SetStateAction, useState } from "react";
-import { Modal } from ".";
 import { JWTKeyName, verificationAmount } from "@/utils/constants";
 import { Copy } from "../Common";
 import { shortenEthAddress } from "@/utils/web3";
@@ -52,10 +51,7 @@ export function VerificationModal({ setShowModal, address }: Props) {
   };
 
   return (
-    <Modal
-      className="p-4 flex flex-col gap-8 text-base text-center justify-center"
-      setShowModal={setShowModal}
-    >
+    <>
       <h6>
         To verify your signin, please transfer {verificationAmount}ETH to the
         below address, for the wallet address you just entered.
@@ -88,6 +84,6 @@ export function VerificationModal({ setShowModal, address }: Props) {
               ? "Verified Successfully"
               : verificationState}
       </button>
-    </Modal>
+    </>
   );
 }

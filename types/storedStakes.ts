@@ -6,4 +6,5 @@ export interface StoredStakes {
   pool: string;
   stakedOn: Timestamp;
   status: "PENDING" | "REWARDED";
+  rewardTxn?: string;
 }

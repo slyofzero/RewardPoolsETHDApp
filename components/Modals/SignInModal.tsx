@@ -27,40 +27,42 @@ export function SignInModal({ setShowModal }: Props) {
     setAddress(address);
 
     setShowVerificationModal(true);
-    setShowModal(false);
   }
 
-  return (
-    <Modal setShowModal={setShowModal}>
-      <div className="flex-grow flex flex-col gap-2 items-center justify-center text-lg">
-        <h6>Please enter your wallet address</h6>
+  const signInModal = (
+    <div className="flex-grow flex flex-col gap-2 items-center justify-center text-lg">
+      <h6>Please enter your wallet address</h6>
 
-        <form
-          onSubmit={onSubmit}
-          className="flex flex-col md:flex-row gap-4 items-center mt-2"
-        >
-          <Input
-            name="address"
-            className="w-[21rem]"
-            required
-            match={[isValidEthAddress]}
-          />
-
-          <button className="text-black bg-white rounded-md font-semibold px-4 text-sm p-2">
-            Sign In
-          </button>
-        </form>
-
-        <ShowWhen
-          component={
-            <VerificationModal
-              setShowModal={setShowVerificationModal}
-              address={address}
-            />
-          }
-          when={showVerificationModal}
+      <form
+        onSubmit={onSubmit}
+        className="flex flex-col md:flex-row gap-4 items-center mt-2"
+      >
+        <Input
+          name="address"
+          className="w-[21rem]"
+          required
+          match={[isValidEthAddress]}
         />
-      </div>
+
+        <button className="text-black bg-white rounded-md font-semibold px-4 text-sm p-2 whitespace-nowrap">
+          Sign In
+        </button>
+      </form>
+    </div>
+  );
+
+  return (
+    <Modal
+      className="p-4 flex flex-col gap-8 text-base text-center justify-center"
+      setShowModal={setShowModal}
+    >
+      <ShowWhen
+        component={
+          <VerificationModal setShowModal={setShowModal} address={address} />
+        }
+        when={showVerificationModal}
+        otherwise={signInModal}
+      />
     </Modal>
   );
 }

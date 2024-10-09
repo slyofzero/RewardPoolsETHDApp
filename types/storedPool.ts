@@ -13,4 +13,6 @@ export interface StoredPool extends Omit<CreatePoolData, "duration"> {
   rewardsDepositTxn?: string;
   gasDepositTxn?: string;
   id?: string;
+  rewardRefundTxn?: string;
+  gasRefundTxn?: string;
 }
