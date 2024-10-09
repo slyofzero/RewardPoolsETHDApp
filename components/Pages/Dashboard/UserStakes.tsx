@@ -1,4 +1,3 @@
-import { Link } from "@/components/Common";
 import { ShowWhen } from "@/components/Utils";
 import { useApi } from "@/hooks";
 import { PoolData } from "@/pages/api/pool/[id]";
@@ -79,11 +78,7 @@ export function UserStakes({ stakes }: Props) {
 
   const noUserStakes = (
     <div className="text-center text-lg font-semibold">
-      You have&apos;t created any staking pools yet.{" "}
-      <Link className="underline underline-offset-4" href={"/createPool"}>
-        Click here
-      </Link>{" "}
-      to create one.
+      You have&apos;t created any staking yet.
     </div>
   );
 

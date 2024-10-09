@@ -125,7 +125,7 @@ export function UserPools({ pools }: Props) {
   const noUserPools = (
     <div className="text-center text-lg font-semibold">
       You have&apos;t created any staking pools yet.{" "}
-      <Link className="underline underline-offset-4" href={"/createPool"}>
+      <Link className="underline underline-offset-4" href={"/pools/create"}>
         Click here
       </Link>{" "}
       to create one.
