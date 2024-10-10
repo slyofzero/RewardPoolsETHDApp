@@ -5,7 +5,7 @@ import { Pool } from "../Dashboard/UserPools";
 import { isValidEthAddress } from "@/utils/web3";
 import { FaPlus } from "react-icons/fa";
 import { ShowWhen, Spinner } from "@/components/Utils";
-import { Link } from "@/components/Common";
+import { Image, Link, PopOver } from "@/components/Common";
 
 export function Pools() {
   const [page, setPage] = useState(1);
@@ -79,16 +79,45 @@ export function Pools() {
 
   return (
     <div className="flex flex-col gap-8 w-full flex-grow bg-black pb-16 lg:pb-0">
-      <div className="flex md:justify-center items-center w-full relative">
-        <input
-          onChange={onChange}
-          type="text"
-          className="bg-black rounded-md border-[1.5px] outline-none p-2 placeholder:text-white/75 w-[14rem] md:w-[21rem]"
-          placeholder="Search pool name or token"
-        />
+      <div className="flex flex-col md:flex-row md:justify-center items-center w-full relative gap-4">
+        <div className="flex flex-col gap-4 justify-center w-full">
+          <div className="flex gap-2 justify-center font-extrabold">
+            <button className="flex items-center gap-2 border-solid border-white border-[1px] rounded-md px-4 py-1 bg-white text-black">
+              <Image className="w-8 aspect-square" src={"/ETH.png"} alt="ETH" />
+              ETH
+            </button>
+
+            <PopOver text="Coming Soon...">
+              <button className="flex items-center gap-2 border-solid border-white border-[1px] rounded-md px-4 py-1">
+                <Image
+                  className="w-8 aspect-square"
+                  src={"/BASE.png"}
+                  alt="BASE"
+                />
+                Base
+              </button>
+            </PopOver>
+          </div>
+
+          <div className="flex justify-center items-center gap-1 w-full">
+            <input
+              onChange={onChange}
+              type="text"
+              className="bg-black rounded-md border-[1.5px] outline-none p-2 placeholder:text-white/75 w-full md:w-[21rem] flex-grow md:flex-grow-0"
+              placeholder="Search pool name or token"
+            />
+            <Link
+              href={"/pools/create"}
+              className="flex md:hidden items-center gap-1 md:absolute right-0 text-black rounded-md font-semibold px-4 text-sm p-2 capitalize bg-white whitespace-nowrap"
+            >
+              <FaPlus /> Create
+            </Link>
+          </div>
+        </div>
+
         <Link
           href={"/pools/create"}
-          className="flex items-center gap-1 absolute right-0 text-black rounded-md font-semibold px-4 text-sm p-2 capitalize bg-white whitespace-nowrap mr-4"
+          className="hidden md:flex items-center gap-1 md:absolute right-0 text-black rounded-md font-semibold px-4 text-sm p-2 capitalize bg-white whitespace-nowrap mr-4"
         >
           <FaPlus /> Create
         </Link>
@@ -122,7 +151,7 @@ export function Pools() {
         <button
           onClick={onNext}
           className="text-black bg-white rounded-md px-4 text-sm p-2 capitalize disabled:bg-white/50"
-          disabled={totalPages ? page >= totalPages : false}
+          disabled={page >= Number(totalPages)}
         >
           Next
         </button>
