@@ -45,7 +45,7 @@ export function Header() {
         {/* <Image src={"/logo.jpg"} alt="logo" /> */}
 
         <div className="flex items-center justify-center gap-16">
-          <nav className="hidden lg:flex items-center gap-16 font-semibold">
+          <nav className="hidden lg:flex items-center gap-16 font-extrabold">
             <Link href={"/"}>Home</Link>
             <Link href={"/pools"}>Pools</Link>
             <Link href={"/pools/create"}>Create Pool</Link>

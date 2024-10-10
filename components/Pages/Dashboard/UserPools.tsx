@@ -25,7 +25,7 @@ export function Pool({ pool, dashboard }: PoolProps) {
   const depositToPoolButton = (
     <button
       onClick={() => setShowModal(true)}
-      className="text-black bg-white rounded-md font-semibold px-4 text-sm p-2 capitalize"
+      className="text-black bg-white rounded-md font-bold px-4 text-sm p-2 capitalize"
     >
       Deposit Rewards or Gas
     </button>
@@ -34,7 +34,7 @@ export function Pool({ pool, dashboard }: PoolProps) {
   const stakeButton = (
     <button
       onClick={() => setShowStakingModal(true)}
-      className="text-black bg-white rounded-md font-semibold px-4 text-sm p-2 capitalize"
+      className="text-black bg-white rounded-md font-bold px-4 text-sm p-2 capitalize"
     >
       Stake
     </button>
@@ -45,7 +45,7 @@ export function Pool({ pool, dashboard }: PoolProps) {
       <div className="flex flex-col gap-4 p-4 rounded-md border-white border-[1px] border-solid">
         <div className="flex justify-between items-center">
           <div className="flex flex-col gap-1">
-            <h6 className="text-xl font-semibold">{pool.name}</h6>
+            <h6 className="text-xl font-bold">{pool.name}</h6>
             <ShowWhen
               component={
                 <span>Creator - {shortenEthAddress(pool.creator, 5)}</span>
@@ -56,7 +56,7 @@ export function Pool({ pool, dashboard }: PoolProps) {
 
           <span
             className={classNames(
-              "p-1 px-4 rounded-md text-black font-bold text-sm",
+              "p-1 px-4 rounded-md text-black font-extrabold text-sm",
               pool.status === "PENDING"
                 ? "bg-orange-500"
                 : pool.status === "ACTIVE"
@@ -123,7 +123,7 @@ export function UserPools({ pools }: Props) {
   );
 
   const noUserPools = (
-    <div className="text-center text-lg font-semibold">
+    <div className="text-center text-lg font-bold">
       You have&apos;t created any staking pools yet.{" "}
       <Link className="underline underline-offset-4" href={"/pools/create"}>
         Click here
@@ -134,7 +134,7 @@ export function UserPools({ pools }: Props) {
 
   return (
     <div className="flex flex-col gap-8">
-      <h2 className="text-3xl font-bold text-center md:text-left">
+      <h2 className="text-3xl font-extrabold text-center md:text-left">
         Your Staking Pools
       </h2>
 

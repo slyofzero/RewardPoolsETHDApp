@@ -86,9 +86,12 @@ export function Pools() {
           className="bg-black rounded-md border-[1.5px] outline-none p-2 placeholder:text-white/75 w-[14rem] md:w-[21rem]"
           placeholder="Search pool name or token"
         />
-        <button className="flex items-center gap-1 absolute right-0 text-black rounded-md font-semibold px-4 text-sm p-2 capitalize bg-white whitespace-nowrap mr-4">
+        <Link
+          href={"/pools/create"}
+          className="flex items-center gap-1 absolute right-0 text-black rounded-md font-semibold px-4 text-sm p-2 capitalize bg-white whitespace-nowrap mr-4"
+        >
           <FaPlus /> Create
-        </button>
+        </Link>
       </div>
 
       <ShowWhen

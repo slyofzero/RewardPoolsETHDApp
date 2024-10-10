@@ -50,7 +50,7 @@ export function CreatePool() {
   const createPool = (
     <div className="flex flex-col gap-16 items-center justify-center mt-8 md:mt-0">
       <div className="flex flex-col items-center gap-8">
-        <h3 className="text-2xl font-bold">Create Token Staking Pool</h3>
+        <h3 className="text-2xl font-extrabold">Create Token Staking Pool</h3>
         <h3 className="md:w-1/2">
           To create a token staking pool, please fill the below form. You&apos;d
           need to deposit the staking rewards, as well as the ETH that would be
@@ -62,7 +62,7 @@ export function CreatePool() {
 
       <form
         onSubmit={onSubmit}
-        className="flex flex-col gap-8 items-center justify-center"
+        className="flex flex-col gap-8 items-center justify-center [&>div>span]:font-bold"
       >
         <div className="flex gap-8 justify-between items-center w-full">
           <span>Pool Name - </span>
@@ -111,7 +111,7 @@ export function CreatePool() {
         </div>
 
         <button
-          className="text-black bg-white rounded-md font-semibold px-4 text-sm p-2 w-36"
+          className="text-black bg-white rounded-md font-extrabold px-4 text-sm p-2 w-36"
           type="submit"
         >
           <ShowWhen

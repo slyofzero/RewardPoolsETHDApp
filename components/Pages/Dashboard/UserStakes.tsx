@@ -29,11 +29,11 @@ export function Stake({ stake }: PoolProps) {
     <>
       <div className="flex flex-col gap-4 p-4 rounded-md border-white border-[1px] border-solid">
         <div className="flex justify-between items-center">
-          <h6 className="text-xl font-semibold">{pool.name}</h6>
+          <h6 className="text-xl font-bold">{pool.name}</h6>
 
           <span
             className={classNames(
-              "p-1 px-4 rounded-md text-black font-bold text-sm",
+              "p-1 px-4 rounded-md text-black font-extrabold text-sm",
               stake.status === "PENDING" ? "bg-orange-500" : "bg-green-500"
             )}
           >
@@ -77,14 +77,14 @@ export function UserStakes({ stakes }: Props) {
   );
 
   const noUserStakes = (
-    <div className="text-center text-lg font-semibold">
+    <div className="text-center text-lg font-bold">
       You have&apos;t created any staking yet.
     </div>
   );
 
   return (
     <div className="flex flex-col gap-8">
-      <h2 className="text-3xl font-bold text-center md:text-left capitalize">
+      <h2 className="text-3xl font-extrabold text-center md:text-left capitalize">
         Your Stakes in pools
       </h2>
 
