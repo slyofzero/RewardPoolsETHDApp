@@ -5,6 +5,7 @@ import { Pool } from "../Dashboard/UserPools";
 import { isValidEthAddress } from "@/utils/web3";
 import { FaPlus } from "react-icons/fa";
 import { ShowWhen, Spinner } from "@/components/Utils";
+import { Link } from "@/components/Common";
 
 export function Pools() {
   const [page, setPage] = useState(1);
@@ -64,6 +65,18 @@ export function Pools() {
     </div>
   );
 
+  const noPoolsComponent = (
+    <div className="flex items-center justify-center flex-grow">
+      <h6 className="text-2xl font-extrabold text-center">
+        No pools have been created yet.{" "}
+        <Link className="underline underline-offset-4" href={"/pools/create"}>
+          Click here
+        </Link>{" "}
+        to create one.
+      </h6>
+    </div>
+  );
+
   return (
     <div className="flex flex-col gap-8 w-full flex-grow bg-black pb-16 lg:pb-0">
       <div className="flex md:justify-center items-center w-full relative">
@@ -79,7 +92,13 @@ export function Pools() {
       </div>
 
       <ShowWhen
-        component={poolsComponent}
+        component={
+          <ShowWhen
+            component={poolsComponent}
+            when={pools?.length}
+            otherwise={noPoolsComponent}
+          />
+        }
         when={!isLoading}
         otherwise={
           <div className="flex items-center justify-center flex-grow">

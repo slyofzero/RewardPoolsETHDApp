@@ -37,7 +37,8 @@ export default async function pools(
         let query = db
           .collection(collectionName)
           .limit(pageSize)
-          .orderBy("closesAt");
+          .orderBy("closesAt")
+          .where("status", "==", "ACTIVE");
 
         if (token) {
           query = query.where("token", "==", token);
