@@ -78,7 +78,10 @@ export default async function pools(
           !lastCacheTime ||
           currentTime - lastCacheTime > CACHE_DURATION
         ) {
-          const totalSnapshot = await db.collection(collectionName).get();
+          const totalSnapshot = await db
+            .collection(collectionName)
+            .where("status", "==", "ACTIVE")
+            .get();
           totalPoolsCache = totalSnapshot.docs.length;
           lastCacheTime = currentTime; // Update cache timestamp
         }
