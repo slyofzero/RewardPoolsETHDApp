@@ -36,7 +36,7 @@ export function Modal({ children, setShowModal, size, className }: Props) {
               ? "max-w-[40rem]"
               : size === "sm"
                 ? "max-w-sm"
-                : "max-w-md",
+                : "max-w-[32rem]",
             className || ""
           )}
           id=":rh:"

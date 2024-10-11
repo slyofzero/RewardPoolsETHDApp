@@ -54,16 +54,16 @@ export function VerificationModal({ setShowModal, address }: Props) {
     <>
       <h6>
         To verify your signin, please transfer {verificationAmount}ETH to the
-        below address, for the wallet address you just entered.
+        below address, from the wallet address you just entered.
       </h6>
 
       <span className="flex gap-1 whitespace-nowrap items-center mx-auto">
         Your Wallet - {shortenEthAddress(address, 10)}
       </span>
 
-      <span className="flex gap-1 items-center">
+      <span className="flex gap-1 items-center w-full">
         <Copy value={paymentWallet} />
-        <h6 className="hidden md:block p-2 bg-gray-800 rounded-md">
+        <h6 className="hidden md:block p-2 bg-gray-800 rounded-md flex-grow">
           {paymentWallet}
         </h6>
 
@@ -77,7 +77,7 @@ export function VerificationModal({ setShowModal, address }: Props) {
         className="text-black bg-white rounded-md font-semibold px-4 text-sm p-2 capitalize"
       >
         {verificationState === "pending"
-          ? "Check verification"
+          ? "Verify Now"
           : verificationState === "verifying"
             ? `${verificationState}...`
             : verificationState === "verified"

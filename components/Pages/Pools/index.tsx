@@ -78,7 +78,7 @@ export function Pools() {
   );
 
   return (
-    <div className="flex flex-col gap-8 w-full flex-grow bg-black pb-16 lg:pb-0">
+    <div className="flex flex-col gap-8 w-full flex-grow pb-16 lg:pb-0">
       <div className="flex flex-col md:flex-row md:justify-center items-center w-full relative gap-4">
         <div className="flex flex-col gap-4 justify-center w-full">
           <div className="flex gap-2 justify-center font-extrabold">

@@ -6,7 +6,7 @@ import { useUser } from "@/state";
 import { shortenEthAddress } from "@/utils/web3";
 import { IoMdExit } from "react-icons/io";
 import { classNames } from "@/utils";
-import { Link } from "./Common";
+import { Image, Link } from "./Common";
 
 export function Header() {
   const [showSigninModal, setShowSigninModal] = useState(false);
@@ -41,8 +41,15 @@ export function Header() {
   return (
     <>
       <header className="flex justify-between items-center">
-        <h1 className="text-2xl">DApp Logo here</h1>
-        {/* <Image src={"/logo.jpg"} alt="logo" /> */}
+        {/* <h1 className="text-2xl">DApp Logo here</h1> */}
+        <Link
+          href={"/"}
+          className="flex items-center gap-4"
+          showIsOnPage={false}
+        >
+          <Image className="aspect-square w-12" src={"/logo.png"} alt="logo" />
+          <h2 className="text-lg font-extrabold">Butterfly AI</h2>
+        </Link>
 
         <div className="flex items-center justify-center gap-16">
           <nav className="hidden lg:flex items-center gap-16 font-extrabold">

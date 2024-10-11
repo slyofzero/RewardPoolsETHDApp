@@ -3,6 +3,7 @@ import { Input } from "../Common";
 import { ShowWhen } from "../Utils";
 import { Modal, VerificationModal } from ".";
 import { Dispatch, FormEvent, SetStateAction, useState } from "react";
+import { verificationAmount } from "@/utils/constants";
 
 interface SignInFormData {
   address: string;
@@ -48,6 +49,13 @@ export function SignInModal({ setShowModal }: Props) {
           Sign In
         </button>
       </form>
+
+      <h6 className="mt-8">
+        To connect your wallet, simply enter the wallet address you wish the
+        connect and then click Sign in. A Wallet address will appear on the next
+        page where you are to send {verificationAmount}ETH to verify your the
+        owner of the same wallet (P.O.W.O) Method
+      </h6>
     </div>
   );
 
