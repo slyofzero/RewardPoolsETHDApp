@@ -8,7 +8,7 @@ export function Dashboard() {
   const userData = data?.data;
 
   return (
-    <div className="flex flex-col gap-16 md:mx-12 pb-16 md:pb-0">
+    <div className="flex flex-col gap-16 md:mx-12 pb-16">
       <UserPools pools={userData?.pools} />
       <UserStakes stakes={userData?.stakings} />
     </div>

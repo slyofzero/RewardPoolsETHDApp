@@ -60,9 +60,10 @@ export default async function pools(
 
         const querySnapshot = await query.get();
 
-        const pools = querySnapshot.docs.map((doc) =>
-          doc.data()
-        ) as StoredPool[];
+        const pools = querySnapshot.docs.map((doc) => ({
+          id: doc.id,
+          ...doc.data(),
+        })) as StoredPool[];
 
         // Check if there are documents before accessing lastVisible
         let lastVisible = null;

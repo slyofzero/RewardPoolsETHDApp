@@ -42,7 +42,10 @@ export function Pool({ pool, dashboard }: PoolProps) {
 
   return (
     <>
-      <div className="flex flex-col gap-4 p-4 rounded-md border-white border-[1px] border-solid">
+      <Link
+        href={`/pools/${pool.id}`}
+        className="flex flex-col gap-4 p-4 rounded-md border-white border-[1px] border-solid min-w-[25rem]"
+      >
         <div className="flex justify-between items-center">
           <div className="flex flex-col gap-1">
             <h6 className="text-xl font-bold">{pool.name}</h6>
@@ -83,14 +86,14 @@ export function Pool({ pool, dashboard }: PoolProps) {
 
         <ShowWhen
           component={depositToPoolButton}
-          when={pool.status === "PENDING"}
+          when={pool.status === "PENDING" && dashboard}
         />
 
         <ShowWhen
           component={stakeButton}
           when={pool.status === "ACTIVE" && !dashboard}
         />
-      </div>
+      </Link>
 
       <ShowWhen
         component={

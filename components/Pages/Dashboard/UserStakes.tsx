@@ -88,7 +88,11 @@ export function UserStakes({ stakes }: Props) {
         Your Stakes in pools
       </h2>
 
-      <ShowWhen component={userStakes} when={stakes} otherwise={noUserStakes} />
+      <ShowWhen
+        component={userStakes}
+        when={stakes && stakes.length > 0}
+        otherwise={noUserStakes}
+      />
     </div>
   );
 }
