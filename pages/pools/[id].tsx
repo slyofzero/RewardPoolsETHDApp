@@ -15,7 +15,7 @@ function PoolData() {
 
   return (
     <div className="flex flex-grow items-center justify-center">
-      <Pool pool={data?.pool} />
+      <Pool pool={data?.pool} showPoolData />
     </div>
   );
 }

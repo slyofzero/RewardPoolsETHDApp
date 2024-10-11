@@ -22,6 +22,10 @@ export interface CreatePoolData {
   pool: string;
   tokenSymbol: string;
   maxStaking: number;
+  description: string;
+  twitter: string;
+  telegram: string;
+  website: string;
 }
 
 export function CreatePool() {
@@ -53,7 +57,7 @@ export function CreatePool() {
   }
 
   const createPool = (
-    <div className="flex flex-col gap-16 items-center justify-center mt-8 md:mt-0">
+    <div className="flex flex-col gap-16 items-center justify-center mt-8 md:mt-0 pb-16">
       <div className="flex flex-col items-center gap-8">
         <h3 className="text-2xl font-extrabold">Create Token Staking Pool</h3>
         <h3 className="md:w-1/2 text-center">
@@ -122,6 +126,30 @@ export function CreatePool() {
             className="w-[12rem] md:w-[22rem]"
             required
             match={[isValidNumber]}
+          />
+        </div>
+
+        <div className="flex gap-8 justify-between items-center w-full">
+          <span>Twitter - </span>
+          <Input name="twitter" className="w-[12rem] md:w-[22rem]" />
+        </div>
+
+        <div className="flex gap-8 justify-between items-center w-full">
+          <span>Telegram - </span>
+          <Input name="telegram" className="w-[12rem] md:w-[22rem]" />
+        </div>
+
+        <div className="flex gap-8 justify-between items-center w-full">
+          <span>Website - </span>
+          <Input name="website" className="w-[12rem] md:w-[22rem]" />
+        </div>
+
+        <div className="flex gap-8 justify-between items-center w-full">
+          <span>Description - </span>
+          <textarea
+            name="description"
+            id="description"
+            className="h-36 border-[1.5px] border-white bg-black rounded-md placeholder:text-white/75 flex p-2 outline-none w-[12rem] md:w-[22rem] resize-none"
           />
         </div>
 

@@ -25,7 +25,7 @@ export default async function pools(
         if (pool) {
           return res.status(200).json({
             message: "Pool fetched successfully.",
-            pool,
+            pool: { id, ...pool },
           });
         } else {
           return res.status(404).json({
