@@ -6,7 +6,11 @@ import { CreatePoolResponse } from "@/pages/api/createPool";
 import { useUser } from "@/state";
 import { StoredPool } from "@/types";
 import { clientPoster } from "@/utils/api";
-import { isValidERC20Token, isValidNumber } from "@/utils/form-validation";
+import {
+  isValidERC20Token,
+  isValidNumber,
+  isValidPercentage,
+} from "@/utils/form-validation";
 import { FormEvent, useState } from "react";
 
 export interface CreatePoolData {
@@ -17,6 +21,7 @@ export interface CreatePoolData {
   duration: number;
   pool: string;
   tokenSymbol: string;
+  maxStaking: number;
 }
 
 export function CreatePool() {
@@ -51,7 +56,7 @@ export function CreatePool() {
     <div className="flex flex-col gap-16 items-center justify-center mt-8 md:mt-0">
       <div className="flex flex-col items-center gap-8">
         <h3 className="text-2xl font-extrabold">Create Token Staking Pool</h3>
-        <h3 className="md:w-1/2">
+        <h3 className="md:w-1/2 text-center">
           To create a token staking pool, please fill the below form. You&apos;d
           need to deposit the staking rewards, as well as the ETH that would be
           used in gas while handing out rewards to the staking participants. Any
@@ -97,6 +102,16 @@ export function CreatePool() {
             className="w-[12rem] md:w-[22rem]"
             required
             match={[isValidNumber]}
+          />
+        </div>
+
+        <div className="flex gap-8 justify-between items-center w-full">
+          <span>Max Staking Percentage - </span>
+          <Input
+            name="maxStaking"
+            className="w-[12rem] md:w-[22rem]"
+            required
+            match={[isValidNumber, isValidPercentage]}
           />
         </div>
 

@@ -1,6 +1,5 @@
 import { ChangeEvent, Dispatch, SetStateAction, useState } from "react";
 import { Modal } from ".";
-import { maxStakingPercentage } from "@/utils/constants";
 import { Copy } from "../Common";
 import { shortenEthAddress } from "@/utils/web3";
 import { useUser } from "@/state";
@@ -26,7 +25,13 @@ export function StakingModal({ setShowModal, poolData }: Props) {
   const { user } = useUser();
   const [stakeAmount, setStakeAmount] = useState<number>();
 
-  const { size, pool, tokenSymbol, staked } = poolData;
+  const {
+    size,
+    pool,
+    tokenSymbol,
+    staked,
+    maxStaking: maxStakingPercentage,
+  } = poolData;
   const maxStaking = Math.min(size * maxStakingPercentage, size - staked);
 
   const onChange = (e: ChangeEvent<HTMLInputElement>) => {

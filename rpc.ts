@@ -6,7 +6,8 @@ export const provider = new ethers.JsonRpcProvider(
 );
 
 export const etherScanProvider = new ethers.EtherscanProvider(
-  process.env.NODE_ENV === "development" ? "sepolia" : "mainnet",
+  // process.env.NODE_ENV === "development" ? "sepolia" : "mainnet",
+  "mainnet",
   process.env.ETHERSCAN_API_KEY
 );
 export const web3: Web3 = new Web3(process.env.NEXT_PUBLIC_RPC_URL);

@@ -47,3 +47,12 @@ export const isValidNumber: MatchFuncType = (number) => {
 
   return true;
 };
+
+// ------------------------------ To check if the number is percentage ------------------------------
+export const isValidPercentage: MatchFuncType = (number) => {
+  if (Number(number) > 100) {
+    return "Please enter a valid percentage.";
+  }
+
+  return true;
+};

@@ -130,6 +130,11 @@ export function CreatePoolModal({ setShowModal, poolData }: Props) {
         Your Wallet - {shortenEthAddress(user || "", 10)}
       </span>
 
+      <strong>
+        Only transfer tokens and ETH from the wallet you are signed in with
+        (address shown above). Otherwise it will result in loss of funds.
+      </strong>
+
       <span className="flex gap-1 items-center">
         <Copy value={pool} />
         <h6 className="hidden md:block p-2 bg-gray-800 rounded-md">{pool}</h6>
