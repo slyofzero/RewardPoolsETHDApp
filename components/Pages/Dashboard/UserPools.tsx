@@ -1,4 +1,4 @@
-import { Link } from "@/components/Common";
+import { Image, Link } from "@/components/Common";
 import { StakingModal } from "@/components/Modals";
 import { CreatePoolModal } from "@/components/Modals/CreatePoolModal";
 import { ShowWhen } from "@/components/Utils";
@@ -67,7 +67,15 @@ export function Pool({ pool, dashboard, showPoolData }: PoolProps) {
       <Parent>
         <div className="flex justify-between items-center gap-4">
           <div className="flex flex-col gap-1">
-            <h6 className="text-xl font-bold">{pool.name}</h6>
+            <div className="flex items-center gap-4">
+              <Image
+                className="aspect-square rounded-full w-16"
+                src={pool.logo}
+                alt="logo"
+              />
+              <h6 className="text-xl font-bold">{pool.name}</h6>
+            </div>
+
             <ShowWhen
               component={
                 <p>

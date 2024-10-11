@@ -56,3 +56,14 @@ export const isValidPercentage: MatchFuncType = (number) => {
 
   return true;
 };
+
+// ------------------------------ To check if the number is percentage ------------------------------
+export const isValidUrl: MatchFuncType = (url) => {
+  const isUrl = url.startsWith("https://") || url.startsWith("http://");
+
+  if (!isUrl) {
+    return "Please enter a valid url.";
+  }
+
+  return true;
+};

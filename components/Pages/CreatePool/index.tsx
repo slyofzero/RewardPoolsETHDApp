@@ -26,6 +26,7 @@ export interface CreatePoolData {
   twitter: string;
   telegram: string;
   website: string;
+  logo: string;
 }
 
 export function CreatePool() {
@@ -127,6 +128,11 @@ export function CreatePool() {
             required
             match={[isValidNumber]}
           />
+        </div>
+
+        <div className="flex gap-8 justify-between items-center w-full">
+          <span>Logo - </span>
+          <Input name="logo" className="w-[12rem] md:w-[22rem]" required />
         </div>
 
         <div className="flex gap-8 justify-between items-center w-full">
