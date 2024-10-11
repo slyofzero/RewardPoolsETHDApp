@@ -49,7 +49,7 @@ export function Pool({ pool, dashboard, showPoolData }: PoolProps) {
 
   const Parent = ({ children }: { children: React.ReactNode }) => {
     const className =
-      "flex flex-col gap-4 p-4 rounded-md border-white border-[1px] border-solid min-w-[25rem] max-w-[30rem]";
+      "flex flex-col gap-4 p-4 rounded-md border-white border-[1px] border-solid md:min-w-[25rem] md:max-w-[30rem]";
 
     if (showPoolData) {
       return <div className={className}>{children}</div>;
