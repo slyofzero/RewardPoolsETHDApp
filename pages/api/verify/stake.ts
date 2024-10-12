@@ -79,6 +79,18 @@ export default async function verifyStake(
 
           if (sentTokensAmount !== stakeAmount) continue;
 
+          const txnAlreadyExists = await getDocument<StoredStakes>({
+            collectionName: "stakes",
+            queries: [
+              ["pool", "==", poolData.id],
+              ["stakeTxn", "==", hash],
+            ],
+          });
+
+          if (txnAlreadyExists.length > 0) {
+            continue;
+          }
+
           await addDocument<StoredStakes>({
             collectionName: "stakes",
             data: {
@@ -87,6 +99,7 @@ export default async function verifyStake(
               stakedOn: Timestamp.now(),
               user: address,
               status: "PENDING",
+              stakeTxn: hash,
             },
           });
 

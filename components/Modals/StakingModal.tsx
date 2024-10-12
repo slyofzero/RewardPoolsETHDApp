@@ -57,8 +57,7 @@ export function StakingModal({ setShowModal, poolData }: Props) {
         if (data.response === 200) {
           break;
         }
-        await sleep(10000);
-        //
+        await sleep(5000);
       }
 
       if (attempt < 20) {

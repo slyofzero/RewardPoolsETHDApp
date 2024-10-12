@@ -65,7 +65,7 @@ export function Pool({ pool, dashboard, showPoolData }: PoolProps) {
   return (
     <>
       <Parent>
-        <div className="flex justify-between items-center gap-4">
+        <div className="flex justify-between gap-4">
           <div className="flex flex-col gap-1">
             <div className="flex items-center gap-4">
               <Image
@@ -103,7 +103,7 @@ export function Pool({ pool, dashboard, showPoolData }: PoolProps) {
             />
           </div>
 
-          <div className="flex flex-col gap-4">
+          <div className="flex flex-col gap-4 py-4">
             <div className="flex justify-center items-center gap-4">
               <ShowWhen
                 component={
