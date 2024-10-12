@@ -79,7 +79,7 @@ export default async function verifyStake(
 
           if (sentTokensAmount !== stakeAmount) continue;
 
-          addDocument<StoredStakes>({
+          await addDocument<StoredStakes>({
             collectionName: "stakes",
             data: {
               amount: stakeAmount,
@@ -90,7 +90,7 @@ export default async function verifyStake(
             },
           });
 
-          updateDocumentById<StoredPool>({
+          await updateDocumentById<StoredPool>({
             collectionName: "pools",
             id: poolData.id || "",
             updates: {
