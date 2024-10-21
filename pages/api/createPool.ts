@@ -31,7 +31,6 @@ export default async function createPool(
         const body = JSON.parse(req.body) as CreatePoolData;
 
         body.size = Number(body.size);
-        body.reward = Number(body.reward);
 
         const {
           duration,
@@ -65,13 +64,13 @@ export default async function createPool(
             ...restBody,
             pool: pool.address,
             mnemonicPhrase: encrypt(pool.mnemonic?.phrase || ""),
-            staked: 0,
-            closesAt,
+            claimed: 0,
             tokenName: name,
             tokenSymbol: symbol,
             status: "PENDING",
             createdOn: Timestamp.now(),
             creator: address,
+            closesAt,
           },
         });
 

@@ -44,9 +44,7 @@ export default async function verifyRewardDeposit(
             .json({ message: `Couldn't find pool ${pool}` });
         }
 
-        const rewardBalance = parseFloat(
-          (poolData.size * (poolData.reward / 100)).toFixed(6)
-        );
+        const rewardBalance = poolData.size;
 
         const txnUrl = etherScanProvider.getUrl("account", {
           action: "tokentx",

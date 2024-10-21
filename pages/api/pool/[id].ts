@@ -1,9 +1,18 @@
 import { getDocumentById } from "@/firebase";
 import { ApiResponseTemplate, StoredPool } from "@/types";
+import { decodeJWT } from "@/utils/auth";
+import { getTokenBalance, getTokenDetails } from "@/utils/web3";
 import type { NextApiRequest, NextApiResponse } from "next";
+
+export interface ClaimData {
+  canClaim: boolean;
+  holding: number;
+  reward: number;
+}
 
 export interface PoolData extends ApiResponseTemplate {
   pool?: StoredPool;
+  claimData?: ClaimData;
 }
 
 export default async function pools(
@@ -12,6 +21,7 @@ export default async function pools(
 ) {
   try {
     const method = req.method;
+    const address = decodeJWT(req);
 
     switch (method) {
       case "GET": {
@@ -23,9 +33,26 @@ export default async function pools(
         });
 
         if (pool) {
+          let claimData = { canClaim: false, holding: 0, reward: 0 };
+
+          if (address) {
+            const [tokenData, addressBalance] = await Promise.all([
+              getTokenDetails(pool.token),
+              getTokenBalance(address, pool.token),
+            ]);
+            const holding =
+              (addressBalance / (tokenData?.totalSupply || 0)) * 100;
+            let rewardPercentage = holding / (pool.maxClaim / 100);
+            rewardPercentage = rewardPercentage > 100 ? 100 : rewardPercentage;
+            const reward = (rewardPercentage / 100) * pool.size;
+
+            claimData = { canClaim: true, holding, reward };
+          }
+
           return res.status(200).json({
             message: "Pool fetched successfully.",
             pool: { id, ...pool },
+            claimData,
           });
         } else {
           return res.status(404).json({

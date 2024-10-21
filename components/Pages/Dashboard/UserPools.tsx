@@ -2,6 +2,7 @@ import { Image, Link } from "@/components/Common";
 import { StakingModal } from "@/components/Modals";
 import { CreatePoolModal } from "@/components/Modals/CreatePoolModal";
 import { ShowWhen } from "@/components/Utils";
+import { ClaimData } from "@/pages/api/pool/[id]";
 import { StoredPool } from "@/types";
 import { classNames } from "@/utils";
 import { shortenEthAddress } from "@/utils/web3";
@@ -13,9 +14,10 @@ interface PoolProps {
   pool: StoredPool;
   dashboard?: boolean;
   showPoolData?: boolean;
+  claimData?: ClaimData;
 }
 
-export function Pool({ pool, dashboard, showPoolData }: PoolProps) {
+export function Pool({ pool, dashboard, showPoolData, claimData }: PoolProps) {
   const [showModal, setShowModal] = useState(false);
   const [showStakingModal, setShowStakingModal] = useState(false);
 
@@ -41,9 +43,13 @@ export function Pool({ pool, dashboard, showPoolData }: PoolProps) {
   const stakeButton = (
     <button
       onClick={() => setShowStakingModal(true)}
-      className="text-black bg-white rounded-md font-bold px-4 text-sm p-2 capitalize"
+      className={classNames(
+        "text-black rounded-md font-bold px-4 text-sm p-2 capitalize",
+        claimData?.canClaim ? "bg-white" : "bg-gray-500"
+      )}
+      disabled={!claimData?.canClaim}
     >
-      Stake
+      Claim Reward
     </button>
   );
 
@@ -51,7 +57,7 @@ export function Pool({ pool, dashboard, showPoolData }: PoolProps) {
     const className =
       "flex flex-col gap-4 p-4 rounded-md border-white border-[1px] border-solid md:min-w-[25rem] md:max-w-[30rem]";
 
-    if (showPoolData) {
+    if (showPoolData || dashboard) {
       return <div className={className}>{children}</div>;
     } else {
       return (
@@ -150,12 +156,17 @@ export function Pool({ pool, dashboard, showPoolData }: PoolProps) {
 
         <div className="flex items-center justify-between">
           <p>
-            <strong>Staked</strong> - {pool.staked} / {pool.size}
+            <strong>Min Holding Req.</strong> - {pool.minHolding}%
           </p>
-          <h6>
-            <strong>APY</strong> - {pool.reward}%
-          </h6>
+
+          <p>
+            <strong>Claimed</strong> - {pool.claimed} / {pool.size}
+          </p>
         </div>
+
+        <span>
+          Max Accountable Supply - <strong>{pool.maxClaim}%</strong>
+        </span>
 
         <span>
           Started on - <strong>{createdAt}</strong>

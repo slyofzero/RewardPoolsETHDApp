@@ -28,8 +28,7 @@ export function CreatePoolModal({ setShowModal, poolData }: Props) {
   const router = useRouter();
   const { user } = useUser();
 
-  const { size, reward, pool, tokenSymbol } = poolData;
-  const rewardBalance = parseFloat((size * (reward / 100)).toFixed(6));
+  const { size, pool, tokenSymbol } = poolData;
 
   useEffect(() => {
     if (rewardDepositState === "verified" && gasDepositState === "verified") {
@@ -93,7 +92,7 @@ export function CreatePoolModal({ setShowModal, poolData }: Props) {
       className="text-black bg-white rounded-md font-semibold px-4 text-sm p-2 capitalize"
     >
       {rewardDepositState === "pending"
-        ? `I have deposited ${rewardBalance} ${tokenSymbol}`
+        ? `I have deposited ${size} ${tokenSymbol}`
         : rewardDepositState === "verifying"
           ? `${rewardDepositState}...`
           : rewardDepositState}
@@ -119,7 +118,7 @@ export function CreatePoolModal({ setShowModal, poolData }: Props) {
       setShowModal={setShowModal}
     >
       <h6>
-        To create a staking pool, you&apos;d need to deposit {rewardBalance}{" "}
+        To create a staking pool, you&apos;d need to deposit {size}{" "}
         {tokenSymbol} to ensure staking rewards and {stakingPoolGasEth} ETH to
         serve as gas fees for reward distribution. If any tokens or ETH are left
         after reward distribution, they&apos;d be returned back to the wallet

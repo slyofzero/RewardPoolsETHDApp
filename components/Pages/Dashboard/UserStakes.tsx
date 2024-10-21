@@ -14,12 +14,6 @@ export function Stake({ stake }: PoolProps) {
   const pool = data?.pool;
   if (!pool) return <></>;
 
-  const reward = parseFloat((stake.amount * (pool.reward / 100)).toFixed(6));
-  const closesAtMilliSeconds =
-    // @ts-ignore
-    pool.closesAt._seconds * 1000 + pool.closesAt._nanoseconds / 1000000;
-  const closesAt = moment(closesAtMilliSeconds).format("Do MMMM, YYYY");
-
   const stakedOnMilliseconds =
     // @ts-ignore
     stake.stakedOn._seconds * 1000 + stake.stakedOn._nanoseconds / 1000000;
@@ -45,17 +39,7 @@ export function Stake({ stake }: PoolProps) {
           <span>
             <strong>Staked</strong> - {stake.amount}
           </span>
-          <span>
-            <strong>Reward</strong> - {reward}
-          </span>
-          <span>
-            <strong>Total</strong> - {stake.amount + reward}
-          </span>
         </div>
-
-        <span>
-          Closes at - <strong>{closesAt}</strong>
-        </span>
 
         <span>
           Staked on - <strong>{stakedOn}</strong>
@@ -78,14 +62,14 @@ export function UserStakes({ stakes }: Props) {
 
   const noUserStakes = (
     <div className="text-center text-lg font-bold">
-      You have&apos;t created any staking yet.
+      You have&apos;t claimed any rewards yet.
     </div>
   );
 
   return (
     <div className="flex flex-col gap-8">
       <h2 className="text-3xl font-extrabold text-center md:text-left capitalize">
-        Your Stakes in pools
+        Your claimed rewards
       </h2>
 
       <ShowWhen

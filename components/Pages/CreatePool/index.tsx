@@ -17,11 +17,11 @@ export interface CreatePoolData {
   name: string;
   token: string;
   size: number;
-  reward: number;
-  duration: number;
   pool: string;
+  duration: number;
+  maxClaim: number;
+  minHolding: number;
   tokenSymbol: string;
-  maxStaking: number;
   description: string;
   twitter: string;
   telegram: string;
@@ -60,13 +60,13 @@ export function CreatePool() {
   const createPool = (
     <div className="flex flex-col gap-16 items-center justify-center mt-8 md:mt-0 pb-16">
       <div className="flex flex-col items-center gap-8">
-        <h3 className="text-2xl font-extrabold">Create Token Staking Pool</h3>
+        <h3 className="text-2xl font-extrabold">Create Token Rewarding Pool</h3>
         <h3 className="md:w-1/2 text-center">
-          To create a token staking pool, please fill the below form. You&apos;d
-          need to deposit the staking rewards, as well as the ETH that would be
-          used in gas while handing out rewards to the staking participants. Any
-          excess rewards and ETH that are left after the rewards are handed out
-          would be returned back to you.
+          To create a token rewarding pool, please fill the below form.
+          You&apos;d need to deposit the rewarding rewards, as well as the ETH
+          that would be used in gas while handing out rewards to the rewarding
+          participants. Any excess rewards and ETH that are left after the
+          rewards are handed out would be returned back to you.
         </h3>
       </div>
 
@@ -101,19 +101,9 @@ export function CreatePool() {
         </div>
 
         <div className="flex gap-8 justify-between items-center w-full">
-          <span>Staking Reward Percentage - </span>
+          <span>Minimum Holding Percentage - </span>
           <Input
-            name="reward"
-            className="w-[12rem] md:w-[22rem]"
-            required
-            match={[isValidNumber]}
-          />
-        </div>
-
-        <div className="flex gap-8 justify-between items-center w-full">
-          <span>Max Staking Percentage - </span>
-          <Input
-            name="maxStaking"
+            name="minHolding"
             className="w-[12rem] md:w-[22rem]"
             required
             match={[isValidNumber, isValidPercentage]}
@@ -121,7 +111,17 @@ export function CreatePool() {
         </div>
 
         <div className="flex gap-8 justify-between items-center w-full">
-          <span>Staking Period (in days) - </span>
+          <span>Max Claim Accountable Percentage - </span>
+          <Input
+            name="maxClaim"
+            className="w-[12rem] md:w-[22rem]"
+            required
+            match={[isValidNumber, isValidPercentage]}
+          />
+        </div>
+
+        <div className="flex gap-8 justify-between items-center w-full">
+          <span>Claim Period (in days) - </span>
           <Input
             name="duration"
             className="w-[12rem] md:w-[22rem]"

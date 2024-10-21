@@ -5,7 +5,7 @@ export interface StoredPool extends Omit<CreatePoolData, "duration"> {
   tokenName: string;
   tokenSymbol: string;
   mnemonicPhrase: string;
-  staked: number;
+  claimed: number;
   createdOn: Timestamp;
   closesAt: Timestamp;
   status: "PENDING" | "ACTIVE" | "CLOSED";
