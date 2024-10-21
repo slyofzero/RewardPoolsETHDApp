@@ -23,7 +23,7 @@ export function HeroSection() {
 
         <div className="mt-12 flex gap-8">
           <button className="bg-white text-black text-lg font-extrabold py-4 px-8 rounded-lg">
-            <Link href={"/pools"}>Stake Now</Link>
+            <Link href={"/pools"}>Rev Share</Link>
           </button>
           <button className="bg-white text-black text-lg font-extrabold py-4 px-8 rounded-lg">
             <Link href={"/pools/create"}>Tutorial</Link>
