@@ -10,7 +10,7 @@ export function Dashboard() {
   return (
     <div className="flex flex-col gap-16 md:mx-12 pb-16">
       <UserPools pools={userData?.pools} />
-      <UserStakes stakes={userData?.stakings} />
+      <UserStakes stakes={userData?.rewards} />
     </div>
   );
 }

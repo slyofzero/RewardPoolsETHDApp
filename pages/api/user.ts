@@ -3,7 +3,7 @@ import {
   ApiResponseTemplate,
   StoredAccount,
   StoredPool,
-  StoredStakes,
+  StoredRewards,
 } from "@/types";
 import { decodeJWT } from "@/utils/auth";
 import type { NextApiRequest, NextApiResponse } from "next";
@@ -11,7 +11,7 @@ import type { NextApiRequest, NextApiResponse } from "next";
 export interface UserActivityData {
   user: StoredAccount;
   pools: StoredPool[];
-  stakings: StoredStakes[];
+  rewards: StoredRewards[];
 }
 
 export interface UserData extends ApiResponseTemplate {
@@ -40,13 +40,13 @@ export default async function user(
         });
 
         if (user) {
-          const [pools, stakings] = await Promise.all([
+          const [pools, rewards] = await Promise.all([
             getDocument<StoredPool>({
               collectionName: "pools",
               queries: [["creator", "==", address]],
             }),
-            getDocument<StoredStakes>({
-              collectionName: "stakes",
+            getDocument<StoredRewards>({
+              collectionName: "rewards",
               queries: [["user", "==", address]],
             }),
           ]);
@@ -56,7 +56,7 @@ export default async function user(
             data: {
               user,
               pools,
-              stakings,
+              rewards,
             },
           });
         }

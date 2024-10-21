@@ -2,7 +2,7 @@ export const JWTKeyName = "reward-pools-eth-token";
 export const firebaseCollectionPrefix = "_rewardpools";
 export const verificationAmount = 0.0001;
 export const stakingPoolGasEth = 0.05;
-export const validVerificationTime = 60 * 60;
+export const validVerificationTime = 24 * 60 * 60;
 export const maxStakingPercentage = 0.3;
 
 export const erc20Abi = [

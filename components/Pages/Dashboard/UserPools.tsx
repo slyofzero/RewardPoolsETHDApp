@@ -182,7 +182,7 @@ export function Pool({ pool, dashboard, showPoolData, claimData }: PoolProps) {
 
         <ShowWhen
           component={stakeButton}
-          when={pool.status === "ACTIVE" && !dashboard}
+          when={pool.status === "ACTIVE" && showPoolData}
         />
       </Parent>
 
@@ -195,7 +195,11 @@ export function Pool({ pool, dashboard, showPoolData, claimData }: PoolProps) {
 
       <ShowWhen
         component={
-          <StakingModal poolData={pool} setShowModal={setShowStakingModal} />
+          <StakingModal
+            poolData={pool}
+            setShowModal={setShowStakingModal}
+            claimData={claimData}
+          />
         }
         when={showStakingModal}
       />

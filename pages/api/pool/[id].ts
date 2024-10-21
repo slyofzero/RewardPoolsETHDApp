@@ -1,5 +1,5 @@
-import { getDocumentById } from "@/firebase";
-import { ApiResponseTemplate, StoredPool } from "@/types";
+import { getDocument, getDocumentById } from "@/firebase";
+import { ApiResponseTemplate, StoredPool, StoredRewards } from "@/types";
 import { decodeJWT } from "@/utils/auth";
 import { getTokenBalance, getTokenDetails } from "@/utils/web3";
 import type { NextApiRequest, NextApiResponse } from "next";
@@ -42,11 +42,29 @@ export default async function pools(
             ]);
             const holding =
               (addressBalance / (tokenData?.totalSupply || 0)) * 100;
+
             let rewardPercentage = holding / (pool.maxClaim / 100);
             rewardPercentage = rewardPercentage > 100 ? 100 : rewardPercentage;
-            const reward = (rewardPercentage / 100) * pool.size;
+
+            let reward = (rewardPercentage / 100) * pool.size;
+            reward =
+              reward > pool.size - pool.claimed
+                ? pool.size - pool.claimed
+                : reward;
 
             claimData = { canClaim: true, holding, reward };
+          }
+
+          const userRewardClaim = await getDocument<StoredRewards>({
+            collectionName: "rewards",
+            queries: [
+              ["pool", "==", id],
+              ["user", "==", address],
+            ],
+          });
+
+          if (userRewardClaim.length > 0) {
+            claimData.canClaim = false;
           }
 
           return res.status(200).json({

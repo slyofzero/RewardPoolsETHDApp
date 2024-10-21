@@ -1,12 +1,11 @@
 import { ShowWhen } from "@/components/Utils";
 import { useApi } from "@/hooks";
 import { PoolData } from "@/pages/api/pool/[id]";
-import { StoredStakes } from "@/types";
-import { classNames } from "@/utils";
+import { StoredRewards } from "@/types";
 import moment from "moment";
 
 interface PoolProps {
-  stake: StoredStakes;
+  stake: StoredRewards;
 }
 
 export function Stake({ stake }: PoolProps) {
@@ -24,25 +23,16 @@ export function Stake({ stake }: PoolProps) {
       <div className="flex flex-col gap-4 p-4 rounded-md border-white border-[1px] border-solid">
         <div className="flex justify-between items-center">
           <h6 className="text-xl font-bold">{pool.name}</h6>
-
-          <span
-            className={classNames(
-              "p-1 px-4 rounded-md text-black font-extrabold text-sm",
-              stake.status === "PENDING" ? "bg-orange-500" : "bg-green-500"
-            )}
-          >
-            {stake.status}
-          </span>
         </div>
 
         <div className="flex items-center justify-between">
           <span>
-            <strong>Staked</strong> - {stake.amount}
+            <strong>Reward Claimed</strong> - {stake.amount}
           </span>
         </div>
 
         <span>
-          Staked on - <strong>{stakedOn}</strong>
+          Claimed On - <strong>{stakedOn}</strong>
         </span>
       </div>
     </>
@@ -50,7 +40,7 @@ export function Stake({ stake }: PoolProps) {
 }
 
 interface Props {
-  stakes: StoredStakes[] | undefined;
+  stakes: StoredRewards[] | undefined;
 }
 
 export function UserStakes({ stakes }: Props) {

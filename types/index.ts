@@ -4,3 +4,4 @@ export * from "./storedPool";
 export * from "./transactions";
 export * from "./tokenTransactions";
 export * from "./storedStakes";
+export * from "./storedRewards";
